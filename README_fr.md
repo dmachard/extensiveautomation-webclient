@@ -1,37 +1,36 @@
-Web interface for ExtensiveAutomation
+Interface web pour le serveur ExtensiveAutomation
 =====================================
 
 Introduction
 ------------
 
-The web interface enable to interact with the ExtensiveAutomation throught the REST API.
-The purpose is to replace the qt application.
+L'interface web permet de piloter le serveur ExtensiveAutomation à travers son API REST.
+Le but est de remplacer à terme le client lourd.
 
-Installing from source
+Installation depuis les sources
 ----------------------
 
-1. Clone this repository on your linux server
+1. Cloner ce dépôt sur votre serveur
 
         git clone https://github.com/ExtensiveAutomation/extensiveautomation-webclient.git
 
-2. As precondition, install the `npm` and `nodejs` command then run the following command:
+2. Installer les  paquets `npm` and `nodejs`, ensuite exécuter la commande suivante:
 
         npm install 
         
-
-3. Finnaly, start the web interface in development mode
+3. Démarrer le serveur on mode développement
 
         npm run serve
         
         
-Build the source
-----------------
+Construction depuis les sources
+-------------------------------
 
-1. Execute the following command to build the source
+1. Exécuter la commande pour construire l'interface
 
         npm run build
         
-2. The output `dist` can deployed on a web server. A configuration for apache if provided in source  `reverseproxy\extensiveautomation_web.conf`.
+2. Le résultat est disponible dans le répertoire `dist`. Ces fichiers peuvent être déployé sur un serveur web. Un exemple de configuration pour apache est disponible dans le répertoire `reverseproxy\extensiveautomation_web.conf`.
 
         Listen 443
         
@@ -61,10 +60,11 @@ Build the source
 
         </VirtualHost>
 
-    The web interface is running on tcp port 443 with tls mode.
+    L'interface est disponible sur le port tcp/443 en mode tls
     
-Author
+     
+Auteur
 -------
 
-It was created by *Denis MACHARD*
+Logiciel crée par *Denis MACHARD*
  

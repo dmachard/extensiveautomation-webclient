@@ -1,0 +1,6 @@
+1.0.0
+	Date: 20/07/2019
+	What's new
+		1. (major) first release
+	Issues Fixed
+		None
