@@ -8,14 +8,15 @@ L'interface web permet de piloter le serveur ExtensiveAutomation à travers son 
 Le but est de remplacer à terme le client lourd.
 
 Installation depuis les sources
-----------------------
+-------------------------------
 
 1. Cloner ce dépôt sur votre serveur
 
         git clone https://github.com/ExtensiveAutomation/extensiveautomation-webclient.git
 
-2. Installer les  paquets `npm` and `nodejs`, ensuite exécuter la commande suivante:
+2. Installer les  paquets `npm` and `nodejs v10`, ensuite exécuter la commande suivante:
 
+        cd extensiveautomation-webclient/
         npm install 
         
 3. Démarrer le serveur on mode développement

@@ -16,6 +16,7 @@ Installing from source
 
 2. As precondition, install the `npm` and `nodejs` command then run the following command:
 
+        cd extensiveautomation-webclient/
         npm install 
         
 
