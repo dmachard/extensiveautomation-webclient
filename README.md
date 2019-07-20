@@ -24,8 +24,27 @@ Installing from source
 
         npm run serve
         
+Installing from docker hub
+-------------------------
+
+1. Downloading the image
+
+        docker pull extensiveautomation/extensiveautomation-webclient:1.0.0
+
+2. Start the container
+
+        docker run -dit --name extensiveweb -p 8080:80 extensiveautomation-webclient
+
+3. You can now load the web interface from url `http://<ip_server>:8080/`
+
+4. If you can connect the extensive server, you need provide the following parameter in the login page:
+
+        Api URL = http://<ip_server_extensive>:8081
+        Api Path = /
+        Api Login = admin
+        Api Password = password
         
-Build the source
+Build from code source
 ----------------
 
 1. Execute the following command to build the source
@@ -63,7 +82,20 @@ Build the source
         </VirtualHost>
 
     The web interface is running on tcp port 443 with tls mode.
+
     
+Création d'une image docker
+--------------------------
+
+1. Prepare a production version with `npm` command
+
+        npm run build
+      
+2. Build the docker image with the following command.
+
+        docker build -t extensiveautomation-webclient .
+   
+   
 Author
 -------
 

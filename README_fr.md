@@ -23,7 +23,26 @@ Installation depuis les sources
 
         npm run serve
         
-        
+Installation depuis docker hub
+-------------------------------
+
+1. Téléchargemetn de l'image depuis docker-hub
+
+        docker pull extensiveautomation/extensiveautomation-webclient:1.0.0
+
+2. Démarrer le container
+
+        docker run -dit --name extensiveweb -p 8080:80 extensiveautomation-webclient
+
+3. Depuis votre navigateur, charger la page `http://<ip_server>:8080/`.
+
+4. Sur la page de connexion, vous pouvez remplir les paramètres suivant:
+
+        Api URL = http://<ip_server_extensive>:8081
+        Api Path = /
+        Api Login = admin
+        Api Password = password
+
 Construction depuis les sources
 -------------------------------
 
@@ -63,7 +82,17 @@ Construction depuis les sources
 
     L'interface est disponible sur le port tcp/443 en mode tls
     
-     
+Création d'une image docker
+--------------------------
+
+1. Tout d'abord, construire une version pour la production
+
+        npm run build
+      
+2. Construire l'image docker
+
+        docker build -t extensiveautomation-webclient .
+   
 Auteur
 -------
 
