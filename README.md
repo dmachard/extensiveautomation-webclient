@@ -84,7 +84,7 @@ Build from code source
     The web interface is running on tcp port 443 with tls mode.
 
     
-Création d'une image docker
+Build docker image
 --------------------------
 
 1. Prepare a production version with `npm` command
