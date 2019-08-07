@@ -33,7 +33,7 @@ Installing from docker hub
 
 2. Start the container
 
-        docker run -dit --name extensiveweb -p 8080:80 extensiveautomation-webclient
+        docker run -dit --name extensive-webclient -p 8080:80 extensiveautomation/extensiveautomation-webclient
 
 3. You can now load the web interface from url `http://<ip_server>:8080/`
 

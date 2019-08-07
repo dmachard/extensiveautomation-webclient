@@ -32,7 +32,7 @@ Installation depuis docker hub
 
 2. Démarrer le container
 
-        docker run -dit --name extensiveweb -p 8080:80 extensiveautomation-webclient
+        docker run -dit --name extensive-webclient -p 8080:80 extensiveautomation/extensiveautomation-webclient
 
 3. Depuis votre navigateur, charger la page `http://<ip_server>:8080/`.
 
