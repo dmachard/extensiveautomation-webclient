@@ -6,9 +6,32 @@
       app
       v-model="drawer"
       >
+
+<v-list dense>
+        <v-list-tile @click="load_dashboard_p">
+        <v-list-tile-action>
+              <v-icon>apps</v-icon>
+            </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Dashboard</v-list-tile-title>
+            </v-list-tile-content>
+        </v-list-tile>
+    </v-list>
+
+      <v-divider></v-divider>
+
     <v-list dense>
         
-        <v-subheader> Tests  </v-subheader>
+        <v-subheader> Automation  </v-subheader>
+
+        <v-list-tile @click="load_tasks_p">
+        <v-list-tile-action>
+              <v-icon>view_headline</v-icon>
+            </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Tasks</v-list-tile-title>
+            </v-list-tile-content>
+        </v-list-tile>
 
         <v-list-tile @click="load_variables_p">
         <v-list-tile-action>
@@ -79,6 +102,10 @@
         }
       },
      methods: {
+      load_tasks_p() {
+        var app = this;
+        app.$router.push('/tasks');
+      },
       load_variables_p() {
         var app = this;
         app.$router.push('/variables');
@@ -90,7 +117,11 @@
       load_projects_p() {
         var app = this;
         app.$router.push('/projects');
-      }
+      },
+      load_dashboard_p() {
+        var app = this;
+        app.$router.push('/dashboard');
+      },
      },
     created:function() {
       EventBus.$on('ApiLogged', user => {

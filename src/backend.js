@@ -146,6 +146,45 @@ export const BackendApi = new Vue({
       renameProject(id, name){
         var body = {"project-id": id, "project-name": name}
         return this.execute('post', '/administration/projects/rename', body)
+      },
+      getTasksCompleted(){
+        return this.execute('get', '/tasks/history')
+      },
+      getTasksRunning(){
+        return this.execute('get', '/tasks/running')
+      },
+      getTasksScheduled(){
+        return this.execute('get', '/tasks/waiting')
+      },
+      getTasksListing(){
+        return this.execute('get', '/tasks/listing')
+      },
+      cancelTask(id){
+        var body = { "task-id": id }
+        return this.execute('post', '/tasks/cancel', body)
+      },
+      killTask(id){
+        var body = { "task-id": id }
+        return this.execute('post', '/tasks/kill', body)
+      },
+      replayTask(id){
+        var body = { "task-id": id }
+        return this.execute('post', '/tasks/replay', body)
+      },
+      removeTask(id){
+        var body = { "task-id": id }
+        return this.execute('post', '/tasks/remove', body)
+      },
+      scheduleTask(testprjid, testname, testext, testpath, schedid, repeat, y, m, d, h, mn, s){
+        var body = { "project-id": testprjid, "test-name": testname, 
+                     "test-extension": testext, "test-path": testpath,
+                     "schedule-id": schedid, "schedule-repeat": repeat, 
+                     "schedule-at": [y, m, d, h, mn, s] }
+        return this.execute('post', '/tasks/schedule', body)
+      },
+      getScriptsListing(id){
+        var body = { "project-id": id }
+        return this.execute('post', '/tests/listing/dict', body)
       }
     }
 })

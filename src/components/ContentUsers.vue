@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <v-toolbar flat color="greylight">
-      <v-btn @click="addItem"  color="green" dark class="mb-2">New User</v-btn>
-      <v-dialog 
+<v-container >
+        <v-dialog 
           v-model="dialog" 
           max-width="600px"
           persistent 
@@ -109,22 +107,17 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-toolbar>
-
-<v-container >
    <v-layout >
        <v-flex>
 
         <v-card>
           <v-card-title>
-            <span class="headline">Users List</span>
+            <v-btn @click="addItem"  color="green" dark class="mb-2">ADD USER</v-btn>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
               append-icon="search"
-              label="Search by name"
-              single-line
-              hide-details
+              label="Search"
             ></v-text-field>
           </v-card-title>
           <v-divider></v-divider>
@@ -165,7 +158,6 @@
    </v-layout>
 </v-container>
 
-     </div> 
 </template>
 
 <script>
@@ -185,7 +177,7 @@
         { text: '', align: 'left', value: 'actions', 'sortable': false }
       ],
       datamodel: [],
-      dataprojects: [],
+     // dataprojects: [],
       editedIndex: -1,
       editedItem: { login: '',  
                     id: '', 
@@ -196,7 +188,7 @@
                     apikey_secret: ''},
       rowsPerPageItems: [10, 20, 50],
       pagination: {
-          rowsPerPage: 20
+          rowsPerPage: 10
       },
       level_items: [
           { "text": 'Administrator', "value": "administrator" },

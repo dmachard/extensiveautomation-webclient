@@ -1,9 +1,6 @@
 <template>
-  <div >  
-      <v-toolbar  flat color="greylight">
-          <v-btn @click="addItem"  color="green" dark class="mb-2">New Variable</v-btn>
-      </v-toolbar>
-      <v-dialog  
+      <v-container >
+              <v-dialog  
           v-model="dialog" 
           max-width="800px"
           persistent
@@ -61,30 +58,14 @@
         </v-card>
         
       </v-dialog>
-      <v-container >
          <v-layout >
               <v-flex  >
 
         <v-card>
           <v-card-title>
-            <span class="headline">Variables List </span>
+            <v-btn @click="addItem"  color="green" dark class="mb-2">ADD VARIABLE</v-btn>
             
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="search"
-              label="Search by name"
-              single-line
-              hide-details
-            ></v-text-field>
             
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-container fluid>
-            <v-layout row>
-             
-             <v-flex>
               <v-select
                 v-model="project_select"
                 :items="projects_list"
@@ -92,12 +73,17 @@
                 prepend-icon="dashboard"
                 @input="onProjectChanged"
               ></v-select>
-            </v-flex>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="search"
+              label="Search"
+            ></v-text-field>
             
-              <v-spacer></v-spacer>
-              <v-spacer></v-spacer>
-              <v-spacer></v-spacer>
-            </v-layout>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-container fluid>
             <v-layout row>
              <v-flex>
                 <v-data-table
@@ -135,7 +121,7 @@
       
         </v-layout>
         </v-container>
-  </div>
+
 </template>
 
 <script>
@@ -160,7 +146,7 @@
                 ],
         rowsPerPageItems: [10, 20, 50],
         pagination: {
-            rowsPerPage: 20
+            rowsPerPage: 10
         },
         var_content: '',
         editedIndex: -1,

@@ -137,7 +137,7 @@
                                 EventBus.$emit('ApiLogged', user_session)
 
                                 // redirect to the welcome page
-                                app.$router.push('/welcome')  
+                                app.$router.push('/dashboard')  
                             }  
                         })
 
@@ -160,7 +160,7 @@
             if(user === null || user === undefined) {
                 app.$router.push('/login');
             } else {
-                app.$router.push('/welcome');
+                app.$router.push('/dashboard');
             }
         }  
     }

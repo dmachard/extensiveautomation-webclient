@@ -5,7 +5,8 @@ import ContentUsers from './components/ContentUsers.vue';
 import ContentProjects from './components/ContentProjects.vue'
 import ContentVariables from './components/ContentVariables.vue'
 import ContentLogin from './components/ContentLogin.vue'
-import ContentWelcome from './components/ContentWelcome.vue'
+import ContentDashboard from './components/ContentDashboard.vue'
+import ContentTasks from './components/ContentTasks.vue'
 
 Vue.use(Router)
 
@@ -16,7 +17,8 @@ const router = new Router({
         { path: '/users', component: ContentUsers },
         { path: '/projects', component: ContentProjects },
         { path: '/variables', component: ContentVariables },
-        { path: '/welcome', component: ContentWelcome },
+        { path: '/dashboard', component: ContentDashboard },
+        { path: '/tasks', component: ContentTasks },
         { path: '/*', redirect: '/login' } // otherwise redirect to home
       ]
 });

@@ -1,7 +1,7 @@
 {
     "WELCOME_MESSAGE": "",
-    "API_URL": "https://127.0.0.1:8080",
-    "API_PATH": "/rest/",
+    "API_URL": "http://127.0.0.1:8081",
+    "API_PATH": "/",
     "API_LOGIN": "",
     "API_PASSWORD": ""
 }

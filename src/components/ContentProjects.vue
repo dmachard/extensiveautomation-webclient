@@ -1,9 +1,7 @@
 <template>
-  <div>
-     <v-toolbar  flat color="greylight">
-       
-      <v-btn @click="addItem"  color="green" dark class="mb-2">New Project</v-btn>
 
+<v-container >
+  
       <v-dialog  
           v-model="dialog" 
           max-width="500px"
@@ -56,21 +54,20 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-toolbar>
 
-<v-container >
    <v-layout >
         <v-flex>
         <v-card>
           <v-card-title>
-            <span class="headline">Projects List</span>
+            <v-btn   dark color="green" @click="addItem"  >
+              ADD PROJECT
+            </v-btn>
+          
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
               append-icon="search"
               label="Search"
-              single-line
-              hide-details
             ></v-text-field>
           </v-card-title>
           <v-divider></v-divider>
@@ -110,7 +107,6 @@
    </v-layout>
 </v-container>
 
-     </div> 
 </template>
 
 <script>
@@ -134,7 +130,7 @@
       editedItem: {  name: '',  id: ''  },
       rowsPerPageItems: [10, 20, 50],
       pagination: {
-          rowsPerPage: 20
+          rowsPerPage: 10
       },
     }),
     created () {
