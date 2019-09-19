@@ -28,7 +28,7 @@ Installation depuis docker hub
 
 1. Téléchargemetn de l'image depuis docker-hub
 
-        docker pull extensiveautomation/extensiveautomation-webclient:1.0.0
+        docker pull extensiveautomation/extensiveautomation-webclient:latest
 
 2. Démarrer le container
 

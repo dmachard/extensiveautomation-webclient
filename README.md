@@ -29,7 +29,7 @@ Installing from docker hub
 
 1. Downloading the image
 
-        docker pull extensiveautomation/extensiveautomation-webclient:1.0.0
+        docker pull extensiveautomation/extensiveautomation-webclient:latest
 
 2. Start the container
 

@@ -1,6 +1,6 @@
-1.0.0
-	Date: 20/07/2019
+2.0.0
+	Date: 20/09/2019
 	What's new
-		1. (major) first release
+		1. (major) new feature to support tasks
 	Issues Fixed
 		None
