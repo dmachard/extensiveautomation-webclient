@@ -33,6 +33,15 @@
             </v-list-tile-content>
         </v-list-tile>
 
+        <v-list-tile @click="load_runs_p">
+        <v-list-tile-action>
+              <v-icon>history</v-icon>
+            </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Runs</v-list-tile-title>
+            </v-list-tile-content>
+        </v-list-tile>
+
         <v-list-tile @click="load_variables_p">
         <v-list-tile-action>
               <v-icon>settings_applications</v-icon>
@@ -102,6 +111,10 @@
         }
       },
      methods: {
+      load_runs_p() {
+        var app = this;
+        app.$router.push('/runs');
+      },
       load_tasks_p() {
         var app = this;
         app.$router.push('/tasks');

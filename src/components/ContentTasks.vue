@@ -274,7 +274,6 @@
                                 round
                                 color="black"
                                 @click="cancelTask(props.item.id)" >
-                                <v-icon>cancel</v-icon>
                                 Cancel
                             </v-btn>
                             <v-btn v-if="props.item.state == 'RUNNING'" 
@@ -283,7 +282,6 @@
                                 round
                                 color="red"
                                 @click="killTask(props.item.id)" >
-                                <v-icon>cancel</v-icon>
                                 Kill
                             </v-btn>
                             </v-speed-dial>
@@ -450,20 +448,20 @@
                 }
             }
 
-            // disable progress
-            this.loader_dialog = false
-
             // schedule the task on server side
             await BackendApi.scheduleTask(testprjid, testname, testext, testpath, 
                                           schedid, repeat,
                                           y, m, d, h, mn, s)
 
+            // refresh tasks listing
+            this.getTasksListing()
+
+            // disable progress
+            this.loader_dialog = false
 
             // close the dialog
             this.dialog = false
 
-            // refresh tasks listing
-            this.getTasksListing()
         },
         getTaskMode(item){
             const [ y, m, d, h, mn ] = item["sched-args"]

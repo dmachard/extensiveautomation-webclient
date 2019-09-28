@@ -1,6 +1,6 @@
-2.0.0
-	Date: 20/09/2019
+3.0.0
+	Date: xx/xx/2019
 	What's new
-		1. (major) new feature to support tasks
+		1. (major) new feature to get run logs
 	Issues Fixed
-		None
+		1. (minor) fix missing loader on schedule task

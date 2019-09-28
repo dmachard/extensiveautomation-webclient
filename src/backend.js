@@ -185,6 +185,18 @@ export const BackendApi = new Vue({
       getScriptsListing(id){
         var body = { "project-id": id }
         return this.execute('post', '/tests/listing/dict', body)
+      },
+      getRunsListing(id){
+        var body = { "project-id": id }
+        return this.execute('post', '/results/listing/basic', body)
+      },
+      deleteRun(id, pid){
+        var body = { "test-id": id,  "project-id": pid}
+        return this.execute('post', '/results/remove/by/id', body)
+      },
+      runDetails(id, pid, log_index){
+        var body = { "test-id": id,  "project-id": pid, "log-index": log_index}
+        return this.execute('post', '/results/details', body)
       }
     }
 })
