@@ -162,43 +162,14 @@
       // enable the progress bar
       this.loader = true
 
-      // call the server to retrieve all projects for admin level
-      if (user_json.levels[0] == 'Administrator') {
-        BackendApi.getProjects().then(resp => {
-          if ( resp != undefined) {
-            var i=0
-            for (i = 0; i < resp.projects.length; ++i) {
-              this.projects_list.push(
-                                      {
-                                        "text": resp.projects[i]["name"], 
-                                        "value": resp.projects[i]["id"] 
-                                        } 
-                                      )
-            }
-          }
-          // disable the progress bar
-          this.loader = false
-        })
-
-      // call the backend to retrive projects authorized only for the user provided
-      } else {
-        BackendApi.getUser(user_json.user_id).then(resp => {
-          if ( resp != undefined) {
-            var i=0
-            for (i = 0; i < resp.user.projects.length; ++i) {
-              this.projects_list.push(
-                                      {
-                                        "text": resp.user.projects[i]["name"], 
-                                        "value": resp.user.projects[i]["id"] 
-                                        } 
-                                      )
-            }
-          } 
-        })
-      }
+      // get projects according to the user
+      this.projects_list = BackendApi.getProjectsGranted(user_json)
 
       // finally load variables according to the project selected
       this.loadVariables( this.project_select )
+
+      // disable loader
+      this.loader = false
     },
     methods: {
         loadVariables(prj_id){

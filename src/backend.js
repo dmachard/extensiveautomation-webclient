@@ -135,6 +135,44 @@ export const BackendApi = new Vue({
       getProjects() {
         return this.execute('get', '/administration/projects/listing')
       },
+      getProjectsGranted(user){
+        var prjs = []
+
+        // call the server to retrieve all projects for admin level
+        if (user.levels[0] == 'Administrator') {
+          this.getProjects().then(resp => {
+            if ( resp != undefined) {
+              var i=0
+              for (i = 0; i < resp.projects.length; ++i) {
+                prjs.push(
+                          {
+                            "text": resp.projects[i]["name"], 
+                            "value": resp.projects[i]["id"] 
+                            } 
+                          )
+              }
+            }
+          })
+
+        // call the backend to retrive projects authorized only for the user provided
+        } else {
+          this.getUser(user.user_id).then(resp => {
+            if ( resp != undefined) {
+              var i=0
+              for (i = 0; i < resp.user.projects.length; ++i) {
+                prjs.push(
+                          {
+                            "text": resp.user.projects[i]["name"], 
+                            "value": resp.user.projects[i]["id"] 
+                            } 
+                          )
+              }
+            } 
+          })
+        }
+
+        return prjs
+      },
       addProject(name) {
         var body = {"project-name": name}
         return this.execute('post', '/administration/projects/add', body)

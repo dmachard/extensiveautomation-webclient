@@ -4,3 +4,4 @@
 		1. (major) new feature to get run logs
 	Issues Fixed
 		1. (minor) fix missing loader on schedule task
+		2. (medium) fix bad error message when the user is not administrator in task page

@@ -14,6 +14,14 @@
         <v-card  >
           <v-card-title>
             <span class="headline">Run Logs</span>
+            <v-spacer></v-spacer>
+            <span>
+                <v-progress-circular
+                v-if="loader_logs==true"
+                indeterminate
+                color="primary"
+                ></v-progress-circular>
+            </span>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text  style="height: 500px;">
@@ -156,7 +164,6 @@
             selected: [],
             dialog_logs: false,
             polling: null,
-            polling_logs: null,
             refresh_select: 5000,
             refresh_list: [ {"text": "Refresh disabled", "value": 0 },
                               {"text": "Refresh every 5s", "value": 5000 }, 
@@ -182,17 +189,13 @@
              projects_list: [ {"text": "Common", "value": 1} ],
              logs_items: [],
              logs_index: 0,
-             log_current: null
+             log_current: null,
+             loader_logs: false
         }
-    },
-    
+    },   
     beforeDestroy () {
         // disable the automatic refresh
         clearInterval(this.polling)
-
-        // disable the automatic refresh for run logs
-        // just to be sure
-        clearInterval(this.polling_logs)
     },
     created () {
       // retrieve user from local storage
@@ -202,42 +205,8 @@
       // enable the progress bar
       this.loader_table = true
 
-      // call the server to retrieve all projects for admin level
-      if (user_json.levels[0] == 'Administrator') {
-        BackendApi.getProjects().then(resp => {
-          if ( resp != undefined) {
-            var i=0
-            for (i = 0; i < resp.projects.length; ++i) {
-              this.projects_list.push(
-                                      {
-                                        "text": resp.projects[i]["name"], 
-                                        "value": resp.projects[i]["id"] 
-                                        } 
-                                      )
-            }
-          }
-          // disable the progress bar
-          this.loader_table = false
-        })
-
-      // call the backend to retrive projects authorized only for the user provided
-      } else {
-        BackendApi.getUser(user_json.user_id).then(resp => {
-          if ( resp != undefined) {
-            var i=0
-            for (i = 0; i < resp.user.projects.length; ++i) {
-              this.projects_list.push(
-                                      {
-                                        "text": resp.user.projects[i]["name"], 
-                                        "value": resp.user.projects[i]["id"] 
-                                        } 
-                                      )
-            }
-          } 
-        })
-        // disable the progress bar
-          this.loader_table = false
-     }
+      // get projects according to the user
+      this.projects_list = BackendApi.getProjectsGranted(user_json)
 
      // retrieve results
      this.getRunsListing(this.project_select)
@@ -246,12 +215,18 @@
       if (this.refresh_select > 0 ){
         this.pollData()
       }
+
+      // disable the progress bar
+      this.loader_table = false
     },
     methods: {
         // get run logs according to the item selected
         async getRunLogs(item){
             //activate the loader of the item
             item.loader=true
+
+            // active the loader of the dialog
+            this.loader_logs = true
 
             // reset logs items
             this.logs_items = []
@@ -267,6 +242,7 @@
             // show the form
             this.dialog_logs = true
         },
+        // get run details from server
         async getRunDetails(id){
             await BackendApi.runDetails(id, this.project_select, this.logs_index).then(resp => {
                 if ( resp != undefined) {
@@ -308,6 +284,9 @@
 
                     if (resp["test-verdict"] == null){
                         setTimeout(() => { this.getRunDetails(id) }, 5000)
+                    } else {
+                        // disable the loader, no more data to get from server
+                        this.loader_logs = false
                     }
                 }
             })

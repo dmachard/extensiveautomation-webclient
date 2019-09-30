@@ -265,7 +265,8 @@
                                     round 
                                     :color="getTaskColor(props.item.state)"
                                     dark 
-                                    small>  {{ props.item.state }}
+                                    small>
+                                    {{props.item.state }}
                                 </v-btn>
                             </template>
                             <v-btn v-if="props.item.state == 'WAITING'" 
@@ -632,22 +633,6 @@
                 }
             })
         },
-        getProjectsListing(){
-            BackendApi.getProjects().then(resp => {
-                if ( resp != undefined) {
-                    this.dataprojects = resp.projects
-
-                    for (var i = 0; i < resp.projects.length; ++i) {
-                        this.projects_list.push(
-                                                {
-                                                    "text": resp.projects[i]["name"], 
-                                                    "value": resp.projects[i]["id"] 
-                                                    } 
-                                                )
-                    }
-                }
-            })
-        },
         getTasksListing(){
 
             BackendApi.getTasksListing().then(resp => {
@@ -709,9 +694,12 @@
       },
 
       created () {
+        // retrieve user from local storage
+        const user =  localStorage.getItem('user_session');
+        const user_json =  JSON.parse(user)
         
-        // retrieve projects
-        this.getProjectsListing()
+        // get projects according to the user
+        this.projects_list = BackendApi.getProjectsGranted(user_json)
 
         // retrieve all scripts
         this.getScriptsListing()
