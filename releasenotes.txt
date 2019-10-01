@@ -1,7 +1,10 @@
 3.0.0
-	Date: xx/xx/2019
+	Date: xx/10/2019
 	What's new
 		1. (major) new feature to get run logs
+		2. (minor) dashboard - visual for card improved
+		3. (minor) runs statistics added on dashboard
+		4. (minor) new icons on menu in navigation bar
 	Issues Fixed
 		1. (minor) fix missing loader on schedule task
 		2. (medium) fix bad error message when the user is not administrator in task page

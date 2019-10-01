@@ -6,15 +6,23 @@
     <v-spacer></v-spacer>
     <v-toolbar-items >
     <v-menu v-if="loggedIn"  bottom left offset-y>
-      <v-btn flat slot="activator">{{username}}</v-btn>
+      <v-btn flat slot="activator">
+        <v-icon>person</v-icon>
+        {{username}}
+      </v-btn>
       
        <v-list>
         <v-list-tile  @click="userProfile"  >
-          <v-list-tile-title>Account</v-list-tile-title>
+          <v-list-tile-title>
+            <v-icon>account_circle</v-icon>
+            Account
+            </v-list-tile-title>
         </v-list-tile>
         <v-divider></v-divider>
         <v-list-tile  @click="userLogout" >
-          <v-list-tile-title>Logout</v-list-tile-title>
+          <v-list-tile-title>
+              <v-icon>exit_to_app</v-icon>
+              Logout</v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-menu>

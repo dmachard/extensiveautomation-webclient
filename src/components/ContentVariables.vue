@@ -154,7 +154,7 @@
         project_select: 1,
         projects_list: [ {"text": "Common", "value": 1} ]
     }),
-    created () {
+    async created () {
       // retrieve user from local storage
       const user =  localStorage.getItem('user_session');
       const user_json =  JSON.parse(user)
@@ -163,7 +163,16 @@
       this.loader = true
 
       // get projects according to the user
-      this.projects_list = BackendApi.getProjectsGranted(user_json)
+      var prjs_granted_list = await BackendApi.getProjectsGranted(user_json)
+
+      for (var i = 0; i < prjs_granted_list.length; ++i) {
+        this.projects_list.push(
+                  {
+                    "text": prjs_granted_list[i]["name"], 
+                    "value": prjs_granted_list[i]["id"] 
+                    } 
+                  )
+      }
 
       // finally load variables according to the project selected
       this.loadVariables( this.project_select )

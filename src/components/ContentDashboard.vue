@@ -16,29 +16,28 @@
  <v-container fluid grid-list-xl>
     <v-layout wrap>
       <v-flex xs12 >
-
-
           <v-label >DASHBOARD > TASKS</v-label>
-
        </v-flex>
       <v-flex xs12 sm6 md4>
         <v-card >
-          <v-card-title class="black--text font-weight-bold">Running</v-card-title>
-          <v-card-text class="display-1">{{running}}</v-card-text>
+          <v-card-text class="black--text display-1">
+            <v-chip color="blue" text-color="white">{{running}} RUNNING</v-chip>
+            <v-chip color="grey" text-color="white">{{scheduled}} SCHEDULED</v-chip>
+          </v-card-text>
         </v-card>
       </v-flex>
+      <v-flex xs12 >
+          <v-label >DASHBOARD > RUNS</v-label>
+       </v-flex>
       <v-flex xs12 sm6 md4>
         <v-card >
-          <v-card-title class="black--text font-weight-bold">Scheduled</v-card-title>
-          <v-card-text class="display-1">{{scheduled}}</v-card-text>
+          <v-card-text class="black--text display-1">
+            <v-chip color="green" text-color="white">{{passed}} PASSED</v-chip>
+            <v-chip color="red" text-color="white">{{failed}} FAILED</v-chip>
+            <v-chip color="orange" text-color="white">{{undef}} UNDEFINED</v-chip>
+          </v-card-text>
         </v-card>
       </v-flex>
-     <!-- <v-flex xs12 sm6 md4 >
-        <v-card>
-          <v-card-title class="black--text font-weight-bold">Completed</v-card-title>
-          <v-card-text class="display-1">{{completed}}</v-card-text>
-        </v-card>
-      </v-flex>-->
     </v-layout>
   </v-container>
 
@@ -51,44 +50,67 @@
       data() {
           return {
               running: 0,
-             // completed: 0,
               scheduled: 0,
+              passed: 0,
+              failed: 0,
+              undef: 0,
               polling: null,
               refresh_select: 0,
               refresh_list: [ {"text": "Refresh disabled", "value": 0 },
                               {"text": "Refresh every 5s", "value": 5000 }, 
                               {"text": "Refresh every 10s", "value": 10000 },
-                              {"text": "Refresh every 1min", "value": 60000 }  ]
+                              {"text": "Refresh every 1min", "value": 60000 }  ],
+              prjs_granted: []
           }
       },
       methods: {
-        getTasksListing(){
-            BackendApi.getTasksListing().then(resp => {
-
-              if ( resp != undefined) {
-                var nb_running = 0
-                var nb_scheduled = 0
-                //var nb_completed =  0
-                for (var i = 0; i < resp["tasks-listing"].length; i++) {
-                  if ( resp["tasks-listing"][i]["state"] == "RUNNING" ) {
-                    nb_running += 1
-                  } else if ( resp["tasks-listing"][i]["state"] == "WAITING" || resp["tasks-listing"][i]["state"] == "DISABLED" ) {
-                    nb_scheduled += 1
-                  }/* else {
-                    nb_completed += 1
-                  }*/
-
+        async getTasksListing(){
+          var running = 0
+          var scheduled = 0
+          await BackendApi.getTasksListing().then(resp => {
+            if ( resp != undefined) {
+              for (var i = 0; i < resp["tasks-listing"].length; i++) {
+                if ( resp["tasks-listing"][i]["state"] == "RUNNING" ) {
+                  running += 1
+                } else if ( resp["tasks-listing"][i]["state"] == "WAITING" ) {
+                  scheduled += 1
                 }
-                this.running = nb_running
-                this.scheduled = nb_scheduled
-               // this.completed = nb_completed
               }
+            }
+          })
 
-            })
+          this.running = running
+          this.scheduled = scheduled
+        },
+        async getRunsListing(){
+          var passed = 0
+          var failed = 0
+          var undef = 0
+
+          for (var i = 0; i < this.prjs_granted.length; i++) {
+            await BackendApi.getRunsListing(this.prjs_granted[i].id).then(resp => {
+                if ( resp != undefined) {
+                  for (var j=0; j < resp.listing.length; j++) {
+                    if (resp.listing[j].state == "PASS"){
+                      passed += 1
+                    } else if (resp.listing[j].state == "FAIL"){
+                      failed += 1
+                    } else {
+                      undef += 1
+                    }
+                  }
+                }
+              })
+          }
+
+          this.passed = passed
+          this.failed = failed
+          this.undef = undef
         },
         pollData () {
           this.polling = setInterval(() => {
-              this.getTasksListing()
+            this.getTasksListing()
+            this.getRunsListing()
           }, this.refresh_select )
         },
         onRefreshChanged(){
@@ -105,8 +127,16 @@
         clearInterval(this.polling)
       },
 
-      created () {
+      async created () {
+        // retrieve user from local storage
+        const user =  localStorage.getItem('user_session');
+        const user_json =  JSON.parse(user)
+
+        // get projects according to the user
+        this.prjs_granted = await BackendApi.getProjectsGranted(user_json)
+
         this.getTasksListing()
+        this.getRunsListing()
 
         if (this.refresh_select > 0 ){
           this.pollData()

@@ -122,6 +122,7 @@
                 </td>
                 <td class="text-xs-left">{{props.item.datetime}}</td>
                 <td class="text-xs-left"><v-chip color="grey" small text-color="white">{{ props.item.script }}</v-chip></td>
+                <td class="text-xs-left">{{ props.item["duration-human"] }}</td>
                 <td class="text-xs-left">{{ props.item.user }}</td>
                 <td class="text-xs-left">
                     <v-chip
@@ -156,6 +157,7 @@
 </template>
 
 <script>
+  import moment from 'moment'
   import { BackendApi } from '@/backend.js'
 
   export default {
@@ -172,6 +174,7 @@
             headers: [
                     { text: 'Date', align: 'left', value: 'datetime' },
                     { text: 'Script', align: 'left', value: 'script' },
+                    { text: 'Duration', align: 'left', value: 'duration' },
                     { text: 'User', align: 'left', value: 'user' },
                     { text: 'State', align: 'left', value: 'state' },
                     { text: 'Logs', align: 'left', value: 'logs' }
@@ -197,7 +200,7 @@
         // disable the automatic refresh
         clearInterval(this.polling)
     },
-    created () {
+    async created () {
       // retrieve user from local storage
       const user =  localStorage.getItem('user_session');
       const user_json =  JSON.parse(user)
@@ -206,7 +209,16 @@
       this.loader_table = true
 
       // get projects according to the user
-      this.projects_list = BackendApi.getProjectsGranted(user_json)
+      var prjs_granted_list = await BackendApi.getProjectsGranted(user_json)
+
+      for (var i = 0; i < prjs_granted_list.length; ++i) {
+        this.projects_list.push(
+                  {
+                    "text": prjs_granted_list[i]["name"], 
+                    "value": prjs_granted_list[i]["id"] 
+                    } 
+                  )
+      }
 
      // retrieve results
      this.getRunsListing(this.project_select)
@@ -323,6 +335,12 @@
 
                     for (var i = 0; i < resp["listing"].length; ++i) {
                         resp["listing"][i]["loader"] = false
+
+                        var human_duration = ''
+                        if (resp["listing"][i]['duration'] > 0) {
+                            human_duration = moment.duration( resp["listing"][i]['duration'] , "seconds").humanize()
+                        }
+                        resp["listing"][i]["duration-human"] = human_duration
                     }
 
                     this.datamodel = resp.listing

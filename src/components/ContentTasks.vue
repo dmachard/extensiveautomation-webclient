@@ -495,15 +495,11 @@
         },
         getTaskColor(state){
             if (state == 'RUNNING'){
-                return "green"
-            } else if (state == 'WAITING' || state == 'DISABLED'){
-                return "orange"
-            } else if (state == 'ERROR'){
-                return "red"
-            } else if (state == 'CANCELLED'){   
-                return "grey" 
-            } else {
                 return "blue"
+            } else if (state == 'WAITING'){
+                return "grey"
+            } else {
+                return "black"
             }
         },
         addTask(){
@@ -686,20 +682,31 @@
             const [year, month, day] = date.split('-')
             return `${month}/${day}/${year}`
         },
-        allowedHours: v => v > 12,
+        allowedHours: v => v > 12
       },
       beforeDestroy () {
         // disable the automatic refresh
         clearInterval(this.polling)
       },
 
-      created () {
+      async created () {
         // retrieve user from local storage
         const user =  localStorage.getItem('user_session');
         const user_json =  JSON.parse(user)
         
-        // get projects according to the user
-        this.projects_list = BackendApi.getProjectsGranted(user_json)
+        
+        // get projects according to the user, 
+        // waiting response before to continue
+        this.dataprojects = await BackendApi.getProjectsGranted(user_json)
+
+        for (var i = 0; i < this.dataprojects.length; ++i) {
+            this.projects_list.push(
+                {
+                    "text": this.dataprojects[i]["name"], 
+                    "value": this.dataprojects[i]["id"] 
+                    } 
+                )
+        }
 
         // retrieve all scripts
         this.getScriptsListing()
