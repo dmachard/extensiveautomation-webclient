@@ -50,7 +50,7 @@ Construction depuis les sources
 
         npm run build
         
-2. Le résultat est disponible dans le répertoire `dist`. Ces fichiers peuvent être déployé sur un serveur web. Un exemple de configuration pour apache est disponible dans le répertoire `reverseproxy\extensiveautomation_web.conf`.
+2. Le résultat est disponible dans le répertoire `dist`. Ces fichiers peuvent être déployé sur un serveur web. Un exemple de configuration pour apache est disponible dans le répertoire `apache\extensiveautomation_web.conf`.
 
         Listen 443
         

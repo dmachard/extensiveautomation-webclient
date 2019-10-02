@@ -51,7 +51,7 @@ Build from code source
 
         npm run build
         
-2. The output `dist` can deployed on a web server. A configuration for apache if provided in source  `reverseproxy\extensiveautomation_web.conf`.
+2. The output `dist` can deployed on a web server. A configuration for apache if provided in source  `apache\extensiveautomation_web.conf`.
 
         Listen 443
         

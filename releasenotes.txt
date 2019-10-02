@@ -1,5 +1,5 @@
 3.0.0
-	Date: xx/10/2019
+	Date: 02/10/2019
 	What's new
 		1. (major) new feature to get run logs
 		2. (minor) dashboard - visual for card improved
