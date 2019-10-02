@@ -265,7 +265,8 @@
                                     round 
                                     :color="getTaskColor(props.item.state)"
                                     dark 
-                                    small>  {{ props.item.state }}
+                                    small>
+                                    {{props.item.state }}
                                 </v-btn>
                             </template>
                             <v-btn v-if="props.item.state == 'WAITING'" 
@@ -274,7 +275,6 @@
                                 round
                                 color="black"
                                 @click="cancelTask(props.item.id)" >
-                                <v-icon>cancel</v-icon>
                                 Cancel
                             </v-btn>
                             <v-btn v-if="props.item.state == 'RUNNING'" 
@@ -283,7 +283,6 @@
                                 round
                                 color="red"
                                 @click="killTask(props.item.id)" >
-                                <v-icon>cancel</v-icon>
                                 Kill
                             </v-btn>
                             </v-speed-dial>
@@ -450,20 +449,20 @@
                 }
             }
 
-            // disable progress
-            this.loader_dialog = false
-
             // schedule the task on server side
             await BackendApi.scheduleTask(testprjid, testname, testext, testpath, 
                                           schedid, repeat,
                                           y, m, d, h, mn, s)
 
+            // refresh tasks listing
+            this.getTasksListing()
+
+            // disable progress
+            this.loader_dialog = false
 
             // close the dialog
             this.dialog = false
 
-            // refresh tasks listing
-            this.getTasksListing()
         },
         getTaskMode(item){
             const [ y, m, d, h, mn ] = item["sched-args"]
@@ -496,15 +495,11 @@
         },
         getTaskColor(state){
             if (state == 'RUNNING'){
-                return "green"
-            } else if (state == 'WAITING' || state == 'DISABLED'){
-                return "orange"
-            } else if (state == 'ERROR'){
-                return "red"
-            } else if (state == 'CANCELLED'){   
-                return "grey" 
-            } else {
                 return "blue"
+            } else if (state == 'WAITING'){
+                return "grey"
+            } else {
+                return "black"
             }
         },
         addTask(){
@@ -634,22 +629,6 @@
                 }
             })
         },
-        getProjectsListing(){
-            BackendApi.getProjects().then(resp => {
-                if ( resp != undefined) {
-                    this.dataprojects = resp.projects
-
-                    for (var i = 0; i < resp.projects.length; ++i) {
-                        this.projects_list.push(
-                                                {
-                                                    "text": resp.projects[i]["name"], 
-                                                    "value": resp.projects[i]["id"] 
-                                                    } 
-                                                )
-                    }
-                }
-            })
-        },
         getTasksListing(){
 
             BackendApi.getTasksListing().then(resp => {
@@ -703,17 +682,31 @@
             const [year, month, day] = date.split('-')
             return `${month}/${day}/${year}`
         },
-        allowedHours: v => v > 12,
+        allowedHours: v => v > 12
       },
       beforeDestroy () {
         // disable the automatic refresh
         clearInterval(this.polling)
       },
 
-      created () {
+      async created () {
+        // retrieve user from local storage
+        const user =  localStorage.getItem('user_session');
+        const user_json =  JSON.parse(user)
         
-        // retrieve projects
-        this.getProjectsListing()
+        
+        // get projects according to the user, 
+        // waiting response before to continue
+        this.dataprojects = await BackendApi.getProjectsGranted(user_json)
+
+        for (var i = 0; i < this.dataprojects.length; ++i) {
+            this.projects_list.push(
+                {
+                    "text": this.dataprojects[i]["name"], 
+                    "value": this.dataprojects[i]["id"] 
+                    } 
+                )
+        }
 
         // retrieve all scripts
         this.getScriptsListing()

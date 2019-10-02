@@ -154,7 +154,7 @@
         project_select: 1,
         projects_list: [ {"text": "Common", "value": 1} ]
     }),
-    created () {
+    async created () {
       // retrieve user from local storage
       const user =  localStorage.getItem('user_session');
       const user_json =  JSON.parse(user)
@@ -162,43 +162,23 @@
       // enable the progress bar
       this.loader = true
 
-      // call the server to retrieve all projects for admin level
-      if (user_json.levels[0] == 'Administrator') {
-        BackendApi.getProjects().then(resp => {
-          if ( resp != undefined) {
-            var i=0
-            for (i = 0; i < resp.projects.length; ++i) {
-              this.projects_list.push(
-                                      {
-                                        "text": resp.projects[i]["name"], 
-                                        "value": resp.projects[i]["id"] 
-                                        } 
-                                      )
-            }
-          }
-          // disable the progress bar
-          this.loader = false
-        })
+      // get projects according to the user
+      var prjs_granted_list = await BackendApi.getProjectsGranted(user_json)
 
-      // call the backend to retrive projects authorized only for the user provided
-      } else {
-        BackendApi.getUser(user_json.user_id).then(resp => {
-          if ( resp != undefined) {
-            var i=0
-            for (i = 0; i < resp.user.projects.length; ++i) {
-              this.projects_list.push(
-                                      {
-                                        "text": resp.user.projects[i]["name"], 
-                                        "value": resp.user.projects[i]["id"] 
-                                        } 
-                                      )
-            }
-          } 
-        })
+      for (var i = 0; i < prjs_granted_list.length; ++i) {
+        this.projects_list.push(
+                  {
+                    "text": prjs_granted_list[i]["name"], 
+                    "value": prjs_granted_list[i]["id"] 
+                    } 
+                  )
       }
 
       // finally load variables according to the project selected
       this.loadVariables( this.project_select )
+
+      // disable loader
+      this.loader = false
     },
     methods: {
         loadVariables(prj_id){

@@ -135,6 +135,23 @@ export const BackendApi = new Vue({
       getProjects() {
         return this.execute('get', '/administration/projects/listing')
       },
+      async getProjectsGranted(user){
+        // call the server to retrieve all projects for admin level
+        if (user.levels[0] == 'Administrator') {
+         return await this.getProjects().then(resp => {
+          if ( resp != undefined) {
+            return resp.projects
+          }
+         })
+        // call the backend to retrive projects authorized only for the user provided
+        } else {
+          return await this.getUser(user.user_id).then(resp => {
+            if ( resp != undefined) {
+              return resp.user.projects
+            } 
+          })
+       }
+      },
       addProject(name) {
         var body = {"project-name": name}
         return this.execute('post', '/administration/projects/add', body)
@@ -185,6 +202,18 @@ export const BackendApi = new Vue({
       getScriptsListing(id){
         var body = { "project-id": id }
         return this.execute('post', '/tests/listing/dict', body)
+      },
+      getRunsListing(id){
+        var body = { "project-id": id }
+        return this.execute('post', '/results/listing/basic', body)
+      },
+      deleteRun(id, pid){
+        var body = { "test-id": id,  "project-id": pid}
+        return this.execute('post', '/results/remove/by/id', body)
+      },
+      runDetails(id, pid, log_index){
+        var body = { "test-id": id,  "project-id": pid, "log-index": log_index}
+        return this.execute('post', '/results/details', body)
       }
     }
 })

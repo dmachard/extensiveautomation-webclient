@@ -7,6 +7,7 @@ import ContentVariables from './components/ContentVariables.vue'
 import ContentLogin from './components/ContentLogin.vue'
 import ContentDashboard from './components/ContentDashboard.vue'
 import ContentTasks from './components/ContentTasks.vue'
+import ContentRuns from './components/ContentRuns.vue'
 
 Vue.use(Router)
 
@@ -19,6 +20,7 @@ const router = new Router({
         { path: '/variables', component: ContentVariables },
         { path: '/dashboard', component: ContentDashboard },
         { path: '/tasks', component: ContentTasks },
+        { path: '/runs', component: ContentRuns },
         { path: '/*', redirect: '/login' } // otherwise redirect to home
       ]
 });
