@@ -5,7 +5,9 @@ Introduction
 ------------
 
 L'interface web permet de piloter le serveur ExtensiveAutomation à travers son API REST.
-Le but est de remplacer à terme le client lourd.
+Le but de cette nouvelle interface cliente est de remplacer à terme le client lourd.
+
+![](screenshots/page_dashboard.png)
 
 Installation depuis les sources
 -------------------------------

@@ -5,7 +5,9 @@ Introduction
 ------------
 
 The web interface enable to interact with the ExtensiveAutomation throught the REST API.
-The purpose is to replace the qt application.
+The purpose of this new interface is to replace the qt application.
+
+![](screenshots/page_dashboard.png)
 
 Installing from source
 ----------------------
