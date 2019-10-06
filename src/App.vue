@@ -16,9 +16,9 @@
       <router-view></router-view>
     </v-content>
 
-    <v-footer class="pa-3">
-        <v-spacer></v-spacer>
-        <div>Extensive Automation &copy; - 2010-2019 - Denis MACHARD</div>
+    <v-footer app padless class="caption" >
+        <div class="flex-grow-1"></div>
+        <div><strong>Extensive Automation {{app_version}}</strong> -- &copy; 2010-{{ new Date().getFullYear() }} -- Denis MACHARD</div>
       </v-footer>
       
     <v-dialog v-model="dialog" persistent max-width="290">
@@ -30,7 +30,7 @@
         <v-card-text>{{ msg }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" flat @click="closeError">OK</v-btn>
+          <v-btn color="red darken-1" text @click="closeError">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -44,7 +44,7 @@
         <v-card-text>{{ msg }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" flat @click="closeWarning">OK</v-btn>
+          <v-btn color="red darken-1" text @click="closeWarning">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -66,9 +66,9 @@
                 </v-btn>
               </template>
               <v-list>
-                <v-list-tile @click="updatePassword">
-                  <v-list-tile-title>Update password</v-list-tile-title>
-                </v-list-tile>
+                <v-list-item @click="updatePassword">
+                  <v-list-item-title>Update password</v-list-item-title>
+                </v-list-item>
               </v-list>
             </v-menu>
 
@@ -118,7 +118,7 @@
           
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat 
+            <v-btn color="blue darken-1" text 
                   @click="closeProfile"
                   :loading="loader">Close</v-btn>
           </v-card-actions>
@@ -168,10 +168,10 @@
           
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat 
+            <v-btn color="blue darken-1" text 
                   @click="closePassword"
                   :loading="loader">Close</v-btn>
-            <v-btn color="blue darken-1" flat 
+            <v-btn color="blue darken-1" text 
                   @click="validatePassword"
                   :loading="loader_password">Update</v-btn>
           </v-card-actions>
@@ -186,8 +186,10 @@
   import Navigation from './components/Navigation.vue'
   
   import { BackendApi } from '@/backend.js'
-  import { EventBus } from './main';
-  
+  import { EventBus } from './main'
+
+  var pkg_json = require('./../package.json')
+
   export default {
     components: {
       Toolbar,
@@ -195,6 +197,7 @@
     },
     data () {
       return {
+        app_version: pkg_json.version,
         dialog: false,
         error_auth: false,
         msg: '',
@@ -259,7 +262,8 @@
         EventBus.$emit('ApiLogout', 'success')
 
         // redirect to the login page
-        this.$router.push('/login');
+        // eslint-disable-next-line
+        this.$router.push('/login').catch(err => {})
       },
       hideNavigation() {
          this.nav = !this.nav

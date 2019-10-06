@@ -28,40 +28,38 @@
                                 prepend-icon="dashboard"
                                 @input="onProjectChanged"
                             ></v-select>
-
                             <v-breadcrumbs :items="script_nav">
                                 <template v-slot:item="props">
                                     <a @click="onClickNav(props.item.id)" >{{props.item.text}}</a>
                                 </template>
                             </v-breadcrumbs>
                             <v-list subheader>
-                                <v-list-tile
+                                <v-list-item
                                     v-for="item in items_list"
                                     :key="item.title" 
                                     @click="onClickFolder(item.id)"
                                 >
-                                    <v-list-tile-avatar>
+                                    <v-list-item-avatar>
                                         <v-icon >{{ item.icon }}</v-icon>
-                                    </v-list-tile-avatar>
-                                    <v-list-tile-content>
-                                        <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
-                                <v-list-tile
+                                    </v-list-item-avatar>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-list-item
                                     v-for="item in items2_list"
-                                    :key="item.title"
+                                    :key="item.id"
                                     @click="onClickFile(item.id)"
                                 >
-                                    <v-list-tile-avatar>
+                                    <v-list-item-avatar>
                                         <v-icon>{{ item.icon }}</v-icon>
-                                    </v-list-tile-avatar>
-                                    <v-list-tile-content>
-                                        <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
+                                    </v-list-item-avatar>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
                             </v-list>
                         </v-stepper-content>
-
                         <v-stepper-content step="2">
                             <v-layout row>
                                 <v-flex xs4>
@@ -76,7 +74,6 @@
                                         ></v-select>
                                 </v-flex>
                             </v-layout>
-
                             <v-layout row>
                                 <v-flex xs4>
                                     <v-subheader>Script</v-subheader>
@@ -88,7 +85,6 @@
                                         ></v-text-field>
                                 </v-flex>
                             </v-layout>
-
                             <v-layout row>
                                 <v-flex xs4>
                                     <v-subheader>Run Mode</v-subheader>
@@ -104,7 +100,6 @@
                                     </v-radio-group>
                                 </v-flex>
                             </v-layout>
-
                              <v-layout row>
                                 <v-flex xs4>
                                 </v-flex>
@@ -117,7 +112,6 @@
                                                     prepend-icon="timelapse"
                                                     label="Hour(s)">
                                                 </v-text-field>
-
                                                 <v-text-field 
                                                     v-if="runmode == '5' || runmode == '7'"
                                                     v-model="every_min" 
@@ -126,7 +120,6 @@
                                                     :rules="rule_minute"
                                                     label="Minute(s)">
                                                 </v-text-field>
-
                                                 <v-select
                                                     v-if="runmode == '8'"
                                                     v-model="day_selected"
@@ -134,17 +127,14 @@
                                                     prepend-icon="calendar_today"
                                                     label="Day"
                                                 ></v-select>
-                                                
                                                 <v-menu
                                                     v-if="runmode == '1'"
                                                     ref="menu1"
                                                     v-model="menu1"
                                                     :close-on-content-click="false"
                                                     :nudge-right="40"
-                                                    lazy
                                                     transition="scale-transition"
                                                     offset-y
-                                                    full-width
                                                     max-width="290px"
                                                     min-width="290px"
                                                     >
@@ -159,10 +149,8 @@
                                                         v-on="on"
                                                         ></v-text-field>
                                                     </template>
-
                                                     <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                                                     </v-menu>
-
                                                     <v-menu
                                                         ref="menu"
                                                         v-if="runmode == '1' || runmode == '6' || runmode == '8'"
@@ -170,10 +158,8 @@
                                                         :close-on-content-click="false"
                                                         :nudge-right="40"
                                                         :return-value.sync="time"
-                                                        lazy
                                                         transition="scale-transition"
                                                         offset-y
-                                                        full-width
                                                         max-width="290px"
                                                         min-width="290px"
                                                     >
@@ -187,31 +173,28 @@
                                                         ></v-text-field>
                                                         </template>
                                                         <v-time-picker
-                                                        v-if="menu2"
-                                                        v-model="time"
-                                                        full-width
-                                                        @click:minute="$refs.menu.save(time)"
+                                                            v-if="menu2"
+                                                            v-model="time"
+                                                            @click:minute="$refs.menu.save(time)"
                                                         ></v-time-picker>
                                                     </v-menu>
                                                     
                                                 </v-layout>
                                 </v-flex>
                             </v-layout>
-
                         </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="closeDialog">Cancel</v-btn>
-                    <v-btn color="blue darken-1" flat 
+                    <v-btn color="blue darken-1" text @click="closeDialog">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text 
                             @click="scheduleTask"
                             :loading="loader_dialog"
                             >CREATE</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
          <v-layout >
               <v-flex  >
         <v-card>
@@ -223,10 +206,9 @@
               append-icon="search"
               label="Search"
             ></v-text-field>
-            
             <v-spacer></v-spacer>
             <v-btn  
-                flat icon 
+                icon 
                 @click="getTasksListing">
                 <v-icon>refresh</v-icon>
             </v-btn>
@@ -241,53 +223,51 @@
             <v-container fluid>
             <v-layout row>
              <v-flex>
-                <v-data-table
-                  :headers="headers"
-                  :items="datamodel"
-                  :rows-per-page-items="rowsPerPageItems"
-                  :pagination.sync="pagination"
-                  :search="search"
-                  :loading="loader_table"
-                >
-                
-                <template slot="items" slot-scope="props">
-                    <td class="text-xs-left">{{props.item.id}}</td>
-                    <td><v-chip color="grey" small text-color="white">{{getTaskMode(props.item)}}</v-chip></td>
-                    <td class="text-xs-left"><v-chip color="grey" small text-color="white">{{ props.item["project-name"] }} : {{ props.item.name }}</v-chip></td>
-                    <td class="text-xs-left">{{ props.item.user }}</td>
+                <v-data-table :headers="headers"
+                              :items="datamodel"
+                              :items-per-page="10"
+                              :search="search"
+                              :loading="loader_table"
+                  >
+                    <template v-slot:item.runmode="{ item }">
+                        <v-chip color="grey" small text-color="white">{{getTaskMode(item)}}</v-chip>
+                    </template>
 
-                    <td class="text-xs-left">
+                    <template v-slot:item.script="{ item }">
+                        <v-chip color="grey" small text-color="white">{{ item["project-name"] }} : {{ item.name }}</v-chip>
+                    </template>
+
+                    <template v-slot:item.state="{ item }">
                         <v-speed-dial
                             direction="left"
                             >
                             <template v-slot:activator>
                                 <v-btn
-                                    round 
-                                    :color="getTaskColor(props.item.state)"
+                                    rounded
+                                    :color="getTaskColor(item.state)"
                                     dark 
                                     small>
-                                    {{props.item.state }}
+                                    {{item.state }}
                                 </v-btn>
                             </template>
-                            <v-btn v-if="props.item.state == 'WAITING'" 
+                            <v-btn v-if="item.state == 'WAITING'" 
                                 dark
                                 small
-                                round
+                                rounded
                                 color="black"
-                                @click="cancelTask(props.item.id)" >
+                                @click="cancelTask(item.id)" >
                                 Cancel
                             </v-btn>
-                            <v-btn v-if="props.item.state == 'RUNNING'" 
+                            <v-btn v-if="item.state == 'RUNNING'" 
                                 dark
                                 small
-                                round
+                                rounded
                                 color="red"
-                                @click="killTask(props.item.id)" >
+                                @click="killTask(item.id)" >
                                 Kill
                             </v-btn>
-                            </v-speed-dial>
-                    </td> 
-                </template>
+                        </v-speed-dial>
+                    </template>
                 </v-data-table>
             </v-flex>
             </v-layout>
@@ -318,16 +298,10 @@
               headers: [
                     { text: 'Id', align: 'left', value: 'id' },
                     { text: 'Run mode', align: 'left', value: 'runmode' },
-                    { text: 'Script', align: 'left', value: 'project' },
+                    { text: 'Script', align: 'left', value: 'script' },
                     { text: 'User', align: 'left', value: 'user' },
                     { text: '', align: 'left', value: 'state'}
                 ],
-              rowsPerPageItems: [5, 10, 20, 50],
-              pagination: {
-                sortBy: 'id',
-                descending: true,
-                rowsPerPage: 10
-             },
              search: '',
              loader_table: false,
              loader_dialog: false,

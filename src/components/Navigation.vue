@@ -1,87 +1,81 @@
 <template>   
-   <v-navigation-drawer 
-      v-if="loggedIn" 
-      fixed
-      :clipped="$vuetify.breakpoint.mdAndUp"
-      app
-      v-model="drawer"
-      >
+  <v-navigation-drawer 
+    v-if="loggedIn" 
+    fixed
+    :clipped="$vuetify.breakpoint.mdAndUp"
+    app
+    v-model="drawer"
+    >
 
-<v-list dense>
-        <v-list-tile @click="load_dashboard_p">
-        <v-list-tile-action>
+      <v-list dense>
+            <v-list-item @click="load_dashboard_p">
+              <v-list-item-action>
               <v-icon>apps</v-icon>
-            </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Dashboard</v-list-tile-title>
-            </v-list-tile-content>
-        </v-list-tile>
-    </v-list>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Dashboard</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+      </v-list>
 
       <v-divider></v-divider>
 
-    <v-list dense>
-        
+      <v-list dense>
+            
         <v-subheader> Automation  </v-subheader>
 
-        <v-list-tile @click="load_tasks_p">
-        <v-list-tile-action>
-              <v-icon>view_headline</v-icon>
-            </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Tasks</v-list-tile-title>
-            </v-list-tile-content>
-        </v-list-tile>
+        <v-list-item @click="load_tasks_p">
+          <v-list-item-action>
+            <v-icon>view_headline</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Tasks</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
-        <v-list-tile @click="load_runs_p">
-        <v-list-tile-action>
-              <v-icon>history</v-icon>
-            </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Runs</v-list-tile-title>
-            </v-list-tile-content>
-        </v-list-tile>
+        <v-list-item @click="load_runs_p">
+          <v-list-item-action>
+            <v-icon>history</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Runs</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
-        <v-list-tile @click="load_variables_p">
-        <v-list-tile-action>
-              <v-icon>settings_applications</v-icon>
-            </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Variables</v-list-tile-title>
-            </v-list-tile-content>
-        </v-list-tile>
-    </v-list>
-    <v-divider></v-divider>
+        <v-list-item @click="load_variables_p">
+          <v-list-item-action>
+            <v-icon>settings_applications</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Variables</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+  </v-list>
+  <v-divider></v-divider>
     
-    <v-list dense v-if="isAdmin" >
-        
-        <v-subheader> Administration  </v-subheader>
-        
-        <v-list-tile @click="load_users_p">
-       <v-list-tile-action>
-            <v-icon>people_outline</v-icon>
-          </v-list-tile-action>
-      <v-list-tile-content>
-        <v-list-tile-title>Users</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-            
-        
-        
-        <v-list-tile  @click="load_projects_p">
-          <v-list-tile-action>
-            <v-icon>dashboard</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Projects</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+  <v-list dense v-if="isAdmin" >
+    <v-subheader> Administration  </v-subheader>
+    <v-list-item @click="load_users_p">
+      <v-list-item-action>
+        <v-icon>people_outline</v-icon>
+      </v-list-item-action>
+      <v-list-item-content>
+        <v-list-item-title>Users</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
 
-        
-    </v-list>
-    <v-divider></v-divider>
+    <v-list-item  @click="load_projects_p">
+      <v-list-item-action>
+        <v-icon>dashboard</v-icon>
+      </v-list-item-action>
+      <v-list-item-content>
+        <v-list-item-title>Projects</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item> 
+  </v-list>
+  <v-divider></v-divider>
     
-    </v-navigation-drawer>
+  </v-navigation-drawer>
 </template>
  
 <script>
@@ -113,27 +107,33 @@
      methods: {
       load_runs_p() {
         var app = this;
-        app.$router.push('/runs');
+        // eslint-disable-next-line
+        app.$router.push('/runs').catch(err => {})
       },
       load_tasks_p() {
         var app = this;
-        app.$router.push('/tasks');
+        // eslint-disable-next-line
+        app.$router.push('/tasks').catch(err => {})
       },
       load_variables_p() {
         var app = this;
-        app.$router.push('/variables');
+        // eslint-disable-next-line
+        app.$router.push('/variables').catch(err => {})
       },
       load_users_p() {
         var app = this;
-        app.$router.push('/users');
+        // eslint-disable-next-line
+        app.$router.push('/users').catch(err => {})
       },
       load_projects_p() {
         var app = this;
-        app.$router.push('/projects');
+        // eslint-disable-next-line
+        app.$router.push('/projects').catch(err => {})
       },
       load_dashboard_p() {
         var app = this;
-        app.$router.push('/dashboard');
+        // eslint-disable-next-line
+        app.$router.push('/dashboard').catch(err => {})
       },
      },
     created:function() {

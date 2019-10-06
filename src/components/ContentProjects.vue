@@ -1,112 +1,93 @@
 <template>
-
-<v-container >
-  
-      <v-dialog  
-          v-model="dialog" 
-          max-width="500px"
-          persistent 
-          no-click-animation
-          transition=""
-          >
-          
-        <v-card>
-          <v-card-title>
-            <span class="headline">Project</span>
-            <v-spacer></v-spacer>
-            <v-menu bottom left>
-              <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on"  >
-                  <v-icon>more_vert</v-icon>
-                </v-btn>
-              </template>
-              <v-list   v-if="this.editedIndex > -1" >
-                <v-list-tile 
-                            color="red" 
-                            @click="deleteProject">
-                  <v-list-tile-title>Delete</v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-            </v-menu>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-container grid-list-md>
+  <v-container >
+    <v-dialog v-model="dialog" 
+              max-width="500px"
+              persistent 
+              no-click-animation
+              transition=""
+      >
+      <v-card>
+        <v-card-title>
+          <span class="headline">Project</span>
+          <v-spacer></v-spacer>
+          <v-menu bottom left offset-y>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on"  >
+                <v-icon>more_vert</v-icon>
+              </v-btn>
+            </template>
+            <v-list  v-if="this.editedIndex > -1" >
+              <v-list-item color="red" 
+                           @click="deleteProject">
+                <v-list-item-title>
+                <v-icon>delete</v-icon>Delete</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field 
-                            v-model="editedItem.name" 
-                            label="Name"
-                            :rules="[() => !!editedItem.name || 'This field is required']"
-                      ></v-text-field>
+                <v-text-field  v-model="editedItem.name" 
+                               label="Name"
+                               :rules="[() => !!editedItem.name || 'This field is required']"
+                  ></v-text-field>
               </v-flex>
             </v-layout>
-              </v-container>
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-            <v-btn 
-                  color="blue darken-1" flat 
-                  @click="validate" 
-                  :loading="loader_dialog" >Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-   <v-layout >
-        <v-flex>
-        <v-card>
-          <v-card-title>
-            <v-btn   dark color="green" @click="addItem"  >
-              ADD PROJECT
-            </v-btn>
-          
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="search"
-              label="Search"
-            ></v-text-field>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-container >
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1"
+                 text
+                 @click="close">Cancel</v-btn>
+          <v-btn color="blue darken-1"
+                 text 
+                 @click="validate" 
+                 :loading="loader_dialog" >Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-layout >
+      <v-flex>
+      <v-card>
+        <v-card-title>
+          <v-btn dark
+                 color="green"
+                 @click="addItem" >ADD PROJECT</v-btn>
+          <v-spacer></v-spacer>
+          <v-text-field v-model="search"
+                        append-icon="search"
+                        label="Search"
+          ></v-text-field>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-container >
             <v-layout wrap>
-             
-             <v-flex>
-    <v-data-table
-      :headers="headers"
-      :items="datamodel"
-      :rows-per-page-items="rowsPerPageItems"
-      :pagination.sync="pagination"
-       :search="search"
-      :loading="loader"
-    >
-      <template slot="items" slot-scope="props">
-        <td class="text-xs-left">{{props.item.id}}</td>
-        <td class="text-xs-left">
-           {{ props.item.name }}
-        </td>
-        <td class="text-xs-left">
-          <v-btn icon class="mx-0"  @click="editItem(props.item)" >
-            <v-icon >edit</v-icon>
-          </v-btn>
-        </td>
-      </template>
-    </v-data-table>
-   </v-flex>
+              <v-flex>
+                <v-data-table :headers="headers"
+                              :items="datamodel"
+                              :items-per-page="10"
+                              :search="search"
+                              :loading="loader"
+                    >
+                  <template v-slot:item.actions="{ item }">
+                    <v-btn icon class="mx-0"  @click="editItem(item)" >
+                      <v-icon >edit</v-icon>
+                    </v-btn>
+                  </template>
+                </v-data-table>
+              </v-flex>
             </v-layout>
-              </v-container>
-          </v-card-text>
-
-        </v-card> 
-
-     </v-flex>
-   </v-layout>
-</v-container>
-
+          </v-container>
+        </v-card-text>
+      </v-card> 
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -115,11 +96,10 @@
 
   export default {
     data: () => ({
-      title: 'Administration :: Projects',
       dialog: false,
       loader: false,
       loader_dialog: false,
-       search: '',
+      search: '',
       headers: [
         { text: 'Id', align: 'left', value: 'id' },
         { text: 'Name', align: 'left', value: 'name' },
@@ -127,16 +107,13 @@
       ],
       datamodel: [],
       editedIndex: -1,
-      editedItem: {  name: '',  id: ''  },
-      rowsPerPageItems: [10, 20, 50],
-      pagination: {
-          rowsPerPage: 10
-      },
+      editedItem: {  name: '',  id: ''  }
     }),
     created () {
       // enable progress bar
       this.loader = true
 
+      // get projects list from server
       BackendApi.getProjects().then(resp => {
         if ( resp != undefined) {
             this.datamodel = resp.projects
@@ -147,15 +124,20 @@
       })
     },
     methods: {
+      // create a new project
       addItem() {
         // show the form
         this.dialog = true
       },
+
+      // edit a project
       editItem (item) {
         this.editedIndex = this.datamodel.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
+
+      // close the dialog to create/edit a new project
       close () {
         // hide the dialog
         this.dialog = false
@@ -163,6 +145,8 @@
         this.editedItem = {  name: '',  id: ''  }
         this.editedIndex = -1
       },
+
+      // delete a project in the server
       async deleteProject () {
         // enable progress
         this.loader_dialog = true
@@ -181,6 +165,8 @@
          // close and reset the form
         this.close()
       },
+
+      // create/edit a project to the server
       async validate () {
         // enable progress
         this.loader_dialog = true

@@ -137,7 +137,8 @@
                                 EventBus.$emit('ApiLogged', user_session)
 
                                 // redirect to the welcome page
-                                app.$router.push('/dashboard')  
+                                // eslint-disable-next-line
+                                app.$router.push('/dashboard').catch(err => {})  
                             }  
                         })
 
@@ -158,9 +159,11 @@
 
             var user = localStorage.getItem('user_session')
             if(user === null || user === undefined) {
-                app.$router.push('/login');
+              // eslint-disable-next-line
+                app.$router.push('/login').catch(err => {})
             } else {
-                app.$router.push('/dashboard');
+              // eslint-disable-next-line
+                app.$router.push('/dashboard').catch(err => {})
             }
         }  
     }

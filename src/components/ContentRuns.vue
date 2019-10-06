@@ -1,157 +1,134 @@
 <template>
-    
-              <v-container>
-
-        <v-dialog  
-          v-model="dialog_logs" 
-          max-width="1000px"
-          persistent
-          transition=""
-          no-click-animation
-          scrollable
-       >
-          
-        <v-card  >
-          <v-card-title>
-            <span class="headline">Run Logs</span>
-            <v-spacer></v-spacer>
-            <span>
-                <v-progress-circular
-                v-if="loader_logs==true"
-                indeterminate
-                color="primary"
-                ></v-progress-circular>
-            </span>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text  style="height: 500px;">
-              <v-list>
-                <v-list-group
-                    v-for="item in logs_items"
-                    :key="item.id"
-                    v-model="item.active"
-                    no-action
-                >
-                    <template v-slot:activator>
-                    <v-list-tile>
-                        <v-list-tile-action>
-                            <v-chip 
-                                :color="getRunColor(item.action)"
-                                small 
-                                text-color="white"
-                            >
-                            {{ item.action }}
-                            </v-chip>
-                        </v-list-tile-action>
-                        <v-list-tile-content>
-                             <v-list-tile-title><span class="font-weight-bold body-2">{{ item.title }}</span></v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                    </template>
-
-                    <v-list-tile
-                        v-for="subItem in item.items"
-                        :key="subItem.title"
-                    >
-                        <v-list-tile-content>
-                            <v-list-tile-title>
-                                <span class="black--text font-italic caption    ">{{ subItem.timestamp }}</span>
-                                <span class="grey--text" v-if="subItem.level == 'info'" > {{ subItem.title }}</span>
-                                <span class="red--text" v-if="subItem.level == 'error'" > {{ subItem.title }}</span>
-                                <span class="orange--text" v-if="subItem.level == 'warning'" > {{ subItem.title }}</span>
-                            </v-list-tile-title>
-                        </v-list-tile-content>
-
-                        <v-list-tile-action>
-                            <v-icon>{{ subItem.action }}</v-icon>
-                        </v-list-tile-action>
-                    </v-list-tile>
-                </v-list-group>
-                </v-list>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close_dialog_logs">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-        
-      </v-dialog>
-
-        <v-card>
-          <v-card-title>
-        <v-select
-            v-model="project_select"
-            :items="projects_list"
-            label="Project"
-            prepend-icon="dashboard"
-            @input="onProjectChanged"
-        ></v-select>
-        <v-spacer></v-spacer>
-            <v-btn  
-                flat icon 
-                @click="onManualRefresh">
-                <v-icon>refresh</v-icon>
-            </v-btn>
-            <v-select
-                v-model="refresh_select"
-                :items="refresh_list"
-                @input="onRefreshChanged"
-              ></v-select>
-        </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-
-        <v-data-table
-            v-model="selected"
-            :headers="headers"
-            :items="datamodel"
-            :rows-per-page-items="rowsPerPageItems"
-            :pagination.sync="pagination"
-            :search="search"
-            :loading="loader_table"
-            select-all="red"
-        >
-            <template slot="items" slot-scope="props">
-                <td>
-                    <v-checkbox
-                    v-model="props.selected"
-                    primary
-                    color="red"
-                    hide-details
-                    ></v-checkbox>
-                </td>
-                <td class="text-xs-left">{{props.item.datetime}}</td>
-                <td class="text-xs-left"><v-chip color="grey" small text-color="white">{{ props.item.script }}</v-chip></td>
-                <td class="text-xs-left">{{ props.item["duration-human"] }}</td>
-                <td class="text-xs-left">{{ props.item.user }}</td>
-                <td class="text-xs-left">
-                    <v-chip
-                        small
-                        :color="getRunColor(props.item.state)"
-                        dark>  {{ props.item.state }}
-                    </v-chip>
-                    </td>
-                <td class="text-xs-left">
-                    <v-btn flat
-                        icon class="mx-0"
-                        @click="getRunLogs(props.item)" 
-                        :loading="props.item.loader">
-                        <v-icon >view_list</v-icon>
+    <v-container>
+        <v-dialog v-model="dialog_logs" 
+                  max-width="1000px"
+                  persistent
+                  transition=""
+                  no-click-animation
+                  scrollable
+         >
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Run Logs</span>
+                    <v-spacer></v-spacer>
+                    <span>
+                        <v-progress-circular v-if="loader_logs==true"
+                                             indeterminate
+                                             color="primary"
+                         ></v-progress-circular>
+                    </span>
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text  style="height: 500px;">
+                    <v-list>
+                        <v-list-group  v-for="item in logs_items"
+                                       :key="item.id"
+                                       v-model="item.active"
+                                       no-action >
+                            <template v-slot:activator>
+                                <v-list-item>
+                                    <v-list-item-action>
+                                        <v-chip :color="getRunColor(item.action)"
+                                                small 
+                                                text-color="white"
+                                          >{{ item.action }}</v-chip>
+                                    </v-list-item-action>
+                                    <v-list-item-content>
+                                        <v-list-item-title>
+                                            <span class="font-weight-bold body-2">{{ item.title }}</span>
+                                        </v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </template>
+                            <v-list-item v-for="subItem in item.items"
+                                        :key="subItem.title"
+                             >
+                                <v-list-item-content>
+                                    <v-list-item-title>
+                                        <span class="black--text font-italic caption    ">{{ subItem.timestamp }}</span>
+                                        <span class="grey--text" v-if="subItem.level == 'info'" > {{ subItem.title }}</span>
+                                        <span class="red--text" v-if="subItem.level == 'error'" > {{ subItem.title }}</span>
+                                        <span class="orange--text" v-if="subItem.level == 'warning'" > {{ subItem.title }}</span>
+                                    </v-list-item-title>
+                                </v-list-item-content>
+                                <v-list-item-action>
+                                    <v-icon>{{ subItem.action }}</v-icon>
+                                </v-list-item-action>
+                            </v-list-item>
+                        </v-list-group>
+                    </v-list>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1"
+                           text
+                           @click="close_dialog_logs">Close
                     </v-btn>
-                </td>
-            </template>
-        </v-data-table>
-        <div>
-        
-              <v-btn 
-                v-if="selected.length != 0"
-                dark
-                color="red"
-                @click="deleteRuns" >
-                Remove selected runs
-            </v-btn>
-        </div>
-          </v-card-text>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-card>
+            <v-card-title>
+                <v-select
+                    v-model="project_select"
+                    :items="projects_list"
+                    label="Project"
+                    prepend-icon="dashboard"
+                    @input="onProjectChanged"
+                ></v-select>
+                <v-spacer></v-spacer>
+                <v-btn  
+                    icon 
+                    @click="onManualRefresh">
+                    <v-icon>refresh</v-icon>
+                </v-btn>
+                <v-select
+                    v-model="refresh_select"
+                    :items="refresh_list"
+                    @input="onRefreshChanged"
+                ></v-select>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+                <v-data-table v-model="selected"
+                              :headers="headers"
+                              :items="datamodel"
+                              :items-per-page="10"
+                              :loading="loader_table"
+                              loading-text="Loading... Please wait"
+                              show-select >
+                    <template v-slot:item.durationhuman="{ item }">
+                        <v-chip color="grey" small text-color="white">{{ item.durationhuman }}</v-chip>
+                    </template>
+                    <template v-slot:item.script="{ item }">
+                        <v-chip color="grey" small text-color="white">{{ item.script }}</v-chip>
+                    </template>
+                    <template v-slot:item.state="{ item }">
+                        <v-chip
+                            small
+                            :color="getRunColor(item.state)"
+                            dark>  {{ item.state }}
+                        </v-chip>
+                    </template>
+                    <template v-slot:item.logs="{ item }">
+                        <v-btn text
+                            icon class="mx-0"
+                            @click="getRunLogs(item)" 
+                            :loading="item.loader">
+                            <v-icon >view_list</v-icon>
+                        </v-btn>
+                    </template>
+                </v-data-table>
+                <div>
+                    <v-btn 
+                        v-if="selected.length != 0"
+                        dark
+                        color="red"
+                        @click="deleteRuns" >
+                        Remove selected runs
+                    </v-btn>
+                </div>
+            </v-card-text>
         </v-card> 
     </v-container>
 </template>
@@ -174,20 +151,13 @@
             headers: [
                     { text: 'Date', align: 'left', value: 'datetime' },
                     { text: 'Script', align: 'left', value: 'script' },
-                    { text: 'Duration', align: 'left', value: 'duration' },
+                    { text: 'Duration', align: 'left', value: 'durationhuman' },
                     { text: 'User', align: 'left', value: 'user' },
                     { text: 'State', align: 'left', value: 'state' },
                     { text: 'Logs', align: 'left', value: 'logs' }
                 ],
-              rowsPerPageItems: [5, 10, 20, 50],
-              pagination: {
-                sortBy: 'datetime',
-                descending: true,
-                rowsPerPage: 10
-             },
              loader_table: false,
              datamodel: [],
-             search: '',
              project_select: 1,
              projects_list: [ {"text": "Common", "value": 1} ],
              logs_items: [],
@@ -197,7 +167,7 @@
         }
     },   
     beforeDestroy () {
-        // disable the automatic refresh
+        // disable the automatic refresh when we leave the page
         clearInterval(this.polling)
     },
     async created () {
@@ -254,6 +224,7 @@
             // show the form
             this.dialog_logs = true
         },
+
         // get run details from server
         async getRunDetails(id){
             await BackendApi.runDetails(id, this.project_select, this.logs_index).then(resp => {
@@ -263,6 +234,26 @@
                     for (var i = 0; i < logs.length; ++i) {
                         const [timestamp, action] = logs[i].split(" ", 2)
                         const endline = logs[i].split(" ").slice(2).join(" ")
+                        if ( action == "task-started") {
+                            this.log_current = {
+                                                    id: i,
+                                                    action: 'TASK STARTED',
+                                                    title: '',
+                                                    items: [],
+                                                    active: false
+                                                } 
+                            this.logs_items.push(this.log_current)
+                        }
+                        if ( action == "task-stopped") {
+                            this.log_current = {
+                                                    id: i,
+                                                    action: 'TASK STOPPED',
+                                                    title: '',
+                                                    items: [],
+                                                    active: false
+                                                } 
+                            this.logs_items.push(this.log_current)
+                        }
                         if ( action == "script-started") {
                             this.log_current = {
                                                     id: i,
@@ -285,8 +276,8 @@
                         }
                         if ( action == "script-error") {
                             this.log_current.items.push( { title: endline,
-                                                   timestamp: timestamp,
-                                                   level: "error"} )
+                                                    timestamp: timestamp,
+                                                    level: "error"} )
                         }
                         if ( action == "script-stopped") {
                             const [, , result, ] = logs[i].split(" ")
@@ -304,6 +295,7 @@
             })
 
         },
+
         // delete only selected and terminated runs 
         deleteRuns(){
             for (var i = 0; i < this.selected.length; ++i) {
@@ -313,7 +305,11 @@
                     this.selected.splice(i, 1);
                 }
             }
+
+            // reset selected items
+            this.selected = []
         },
+
         // delete a specific run according to the id provided
         deleteRun(id){
             BackendApi.deleteRun(id, this.project_select).then(resp => {
@@ -322,9 +318,12 @@
                 }
             })
         },
+
+        // called on manuel refresh for the runs listing
         onManualRefresh(){
             this.getRunsListing(this.project_select)
         },
+
         // get a listing of all runs 
         getRunsListing(projectid){
             // enable the progress bar
@@ -336,11 +335,11 @@
                     for (var i = 0; i < resp["listing"].length; ++i) {
                         resp["listing"][i]["loader"] = false
 
-                        var human_duration = ''
+                        var human_duration = '...'
                         if (resp["listing"][i]['duration'] > 0) {
                             human_duration = moment.duration( resp["listing"][i]['duration'] , "seconds").humanize()
                         }
-                        resp["listing"][i]["duration-human"] = human_duration
+                        resp["listing"][i].durationhuman = human_duration
                     }
 
                     this.datamodel = resp.listing
@@ -350,11 +349,14 @@
             // disable the progress bar
             this.loader_table = false
         },
+
         // called when the project is changed from the select
         onProjectChanged(){
           // reload runs according to the selected project
           this.getRunsListing( this.project_select )
         },
+
+        // called when the automatic refresh is activated
         onRefreshChanged(){
           // stop the refresh
           clearInterval(this.polling)
@@ -364,11 +366,15 @@
              this.pollData()
           }
         },
+
+        // automatic refresh of the runs listing every xx seconds
         pollData () {
           this.polling = setInterval(() => {
               this.getRunsListing(this.project_select)
           }, this.refresh_select )
         },
+
+        // return color according item state
         getRunColor(state){
             if (state == 'PASS'){
                 return "green"
@@ -382,6 +388,8 @@
                 return "grey"
             }
         },
+
+        // hide the dialog for logs
         close_dialog_logs(){
             this.dialog_logs = false
         }
