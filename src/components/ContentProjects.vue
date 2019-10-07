@@ -9,7 +9,7 @@
       <v-card>
         <v-card-title>
           <span class="headline">Project</span>
-          <v-spacer></v-spacer>
+          <!--<v-spacer></v-spacer>
           <v-menu bottom left offset-y>
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on"  >
@@ -23,7 +23,7 @@
                 <v-icon>delete</v-icon>Delete</v-list-item-title>
               </v-list-item>
             </v-list>
-          </v-menu>
+          </v-menu>-->
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
@@ -65,14 +65,16 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
-          <v-container >
+          <!--<v-container >
             <v-layout wrap>
-              <v-flex>
+              <v-flex>-->
                 <v-data-table :headers="headers"
                               :items="datamodel"
                               :items-per-page="10"
                               :search="search"
                               :loading="loader"
+                              show-select
+                              v-model="selected"
                     >
                   <template v-slot:item.actions="{ item }">
                     <v-btn icon class="mx-0"  @click="editItem(item)" >
@@ -80,9 +82,19 @@
                     </v-btn>
                   </template>
                 </v-data-table>
-              </v-flex>
+                <div>
+                    <v-btn 
+                        v-if="selected.length != 0"
+                        dark
+                        color="red"
+                        @click="deleteProjects" >
+                          <v-icon>delete</v-icon>
+                        Remove
+                    </v-btn>
+                </div>
+             <!-- </v-flex>
             </v-layout>
-          </v-container>
+          </v-container>-->
         </v-card-text>
       </v-card> 
       </v-flex>
@@ -96,6 +108,7 @@
 
   export default {
     data: () => ({
+      selected: [],
       dialog: false,
       loader: false,
       loader_dialog: false,
@@ -114,16 +127,38 @@
       this.loader = true
 
       // get projects list from server
-      BackendApi.getProjects().then(resp => {
-        if ( resp != undefined) {
-            this.datamodel = resp.projects
-        }
+      this.getProjectsListing()
 
-        // disable progress bar
-        this.loader = false
-      })
+      // disable progress bar
+      this.loader = false
+      
     },
     methods: {
+      // get projects
+      getProjectsListing(){
+        BackendApi.getProjects().then(resp => {
+          if ( resp != undefined) {
+              this.datamodel = resp.projects
+          }
+        })
+      },
+      // delete selected projects
+      deleteProjects(){
+        for (var i = 0; i < this.selected.length; ++i) {
+          this.deleteProject(this.selected[i].id)
+        }
+
+        // reset selected items
+        this.selected = []
+      },
+      // delete a project in the server
+      deleteProject (prj_id) {
+        BackendApi.deleteProject(prj_id).then(resp => {
+            if ( resp != undefined) {
+              this.getProjectsListing()
+            }  
+        })
+      },
       // create a new project
       addItem() {
         // show the form
@@ -144,26 +179,6 @@
 
         this.editedItem = {  name: '',  id: ''  }
         this.editedIndex = -1
-      },
-
-      // delete a project in the server
-      async deleteProject () {
-        // enable progress
-        this.loader_dialog = true
-
-        var prj_id = this.editedItem.id
-        var item_index = this.editedIndex
-
-        await BackendApi.deleteProject(prj_id).then(resp => {
-            if ( resp != undefined) {
-              this.datamodel.splice(item_index, 1)
-            }  })
-
-        // disable progress
-        this.loader_dialog = false
-
-         // close and reset the form
-        this.close()
       },
 
       // create/edit a project to the server

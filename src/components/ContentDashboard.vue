@@ -14,7 +14,7 @@
     <v-container fluid grid-list-xl>
       <v-layout wrap>
         <v-flex xs12 >
-          <v-label >DASHBOARD > TASKS</v-label>
+          <v-label >TASKS</v-label>
         </v-flex>
         <v-flex xs12 sm6 md4>
           <v-card >
@@ -25,7 +25,7 @@
           </v-card>
         </v-flex>
         <v-flex xs12 >
-          <v-label >DASHBOARD > RUNS</v-label>
+          <v-label>RUNS</v-label>
         </v-flex>
         <v-flex xs12 sm6 md4>
           <v-card >

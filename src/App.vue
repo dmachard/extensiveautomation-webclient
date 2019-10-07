@@ -261,6 +261,9 @@
         // emit signal to others components
         EventBus.$emit('ApiLogout', 'success')
 
+        // update the name of the current page
+        EventBus.$emit('CurrentPageChanged', "Login")
+
         // redirect to the login page
         // eslint-disable-next-line
         this.$router.push('/login').catch(err => {})

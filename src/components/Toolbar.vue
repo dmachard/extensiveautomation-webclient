@@ -7,7 +7,8 @@
       :clipped-left="$vuetify.breakpoint.mdAndUp" 
     >
        <v-app-bar-nav-icon v-if="loggedIn"  @click.stop="hideNavigation"></v-app-bar-nav-icon>
-    <v-toolbar-title>Extensive Automation</v-toolbar-title>
+    <v-toolbar-title>Extensive Automation  
+        <span class="overline"> &bull; {{ current_page }}</span></v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items >
     <v-menu v-if="loggedIn"  bottom left offset-y>
@@ -33,8 +34,6 @@
       </v-list>
     </v-menu>
     </v-toolbar-items>
-  <!--  </v-toolbar>-->
-
       </v-app-bar>
   </div>
   
@@ -47,7 +46,8 @@
     data () {
       return {
         loggedIn: false,
-        username: "undefined"
+        username: "undefined",
+        current_page: 'Login'
       }
     },
     methods: {
@@ -62,6 +62,10 @@
       }
    },
     created:function() {
+      EventBus.$on('CurrentPageChanged', obj => {
+          this.current_page = obj         
+      });
+
       EventBus.$on('ApiLogged', obj => {
         this.username = obj.api_login
         this.loggedIn = true;      

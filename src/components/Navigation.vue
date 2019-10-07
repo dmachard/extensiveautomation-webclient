@@ -106,32 +106,56 @@
       },
      methods: {
       load_runs_p() {
-        var app = this;
+        var app = this
+
+        // update the name of the current page
+        EventBus.$emit('CurrentPageChanged', "Runs")
+
         // eslint-disable-next-line
         app.$router.push('/runs').catch(err => {})
       },
       load_tasks_p() {
-        var app = this;
+        var app = this
+
+        // update the name of the current page
+        EventBus.$emit('CurrentPageChanged', "Tasks")
+
         // eslint-disable-next-line
         app.$router.push('/tasks').catch(err => {})
       },
       load_variables_p() {
-        var app = this;
+        var app = this
+
+        // update the name of the current page
+        EventBus.$emit('CurrentPageChanged', "Variables")
+
         // eslint-disable-next-line
         app.$router.push('/variables').catch(err => {})
       },
       load_users_p() {
-        var app = this;
+        var app = this
+
+        // update the name of the current page
+        EventBus.$emit('CurrentPageChanged', "Users")
+
         // eslint-disable-next-line
         app.$router.push('/users').catch(err => {})
       },
       load_projects_p() {
-        var app = this;
+        var app = this
+
+        // update the name of the current page
+        EventBus.$emit('CurrentPageChanged', "Projects")
+
         // eslint-disable-next-line
         app.$router.push('/projects').catch(err => {})
       },
       load_dashboard_p() {
-        var app = this;
+        var app = this
+
+        // update the name of the current page
+        EventBus.$emit('CurrentPageChanged', "Dashboard")
+
         // eslint-disable-next-line
         app.$router.push('/dashboard').catch(err => {})
       },

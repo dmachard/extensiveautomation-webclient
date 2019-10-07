@@ -3,5 +3,8 @@
 	What's new
 		1. (major) major update to vuetify 2.0
 		2. (minor) application version added in footer
+		3. (medium) runs: task event added in logs
+		4. (minor) current page name added in main toolbar
+		5. (minor) projects: show select in table added
 	Issues Fixed
 		1. (minor) xxxx

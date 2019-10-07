@@ -125,7 +125,7 @@
                         dark
                         color="red"
                         @click="deleteRuns" >
-                        Remove selected runs
+                        Remove
                     </v-btn>
                 </div>
             </v-card-text>
