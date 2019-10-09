@@ -9,7 +9,7 @@
       <v-card>
         <v-card-title>
         <span class="headline">Variable</span>
-        <v-spacer></v-spacer>
+        <!--<v-spacer></v-spacer>
         <v-menu bottom left offset-y>
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on"  >
@@ -23,7 +23,7 @@
             </v-list-item-title>
           </v-list-item>
           </v-list>
-        </v-menu>
+        </v-menu>-->
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
@@ -84,14 +84,16 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <v-container fluid>
+            <!--<v-container fluid>
               <v-layout row>
-                <v-flex>
+                <v-flex>-->
                   <v-data-table :headers="headers"
                                 :items="datamodel"
                                 :items-per-page="10"
                                 :search="search"
                                 :loading="loader"
+                                show-select
+                                v-model="selected"
                   >
                     <template v-slot:item.actions="{ item }">
                       <v-btn icon
@@ -101,9 +103,27 @@
                       </v-btn>
                     </template>
                   </v-data-table>
-                </v-flex>
+                  <div>
+                    <v-btn 
+                      class="mx-2"
+                      v-if="selected.length != 0"
+                      dark
+                      color="red"
+                      @click="deleteVariables" >
+                      Remove
+                    </v-btn>
+                    <v-btn 
+                      class="mx-2"
+                      v-if="selected.length != 0"
+                      dark
+                      color="blue"
+                      @click="duplicateVariables" >
+                      Duplicate
+                    </v-btn>
+                </div>
+              <!--  </v-flex>
               </v-layout>
-            </v-container>
+            </v-container>-->
           </v-card-text>
         </v-card> 
       </v-flex>
@@ -121,21 +141,22 @@
         editor: aceeditor
     },
     data: () => ({
-        datamodel: [],
-        search: '',
-        loader: false,
-        loader_dialog: false,
-        dialog: false,
-        headers: [
-                    { text: 'Id', align: 'left', value: 'id' },
-                    { text: 'Name', align: 'left', value: 'name' },
-                    { text: '', align: 'left', value: 'actions', 'sortable': false }
-                ],
-        var_content: '',
-        editedIndex: -1,
-        editedItem: {  name: '',  id: '', value: ''  },
-        project_select: 1,
-        projects_list: [ {"text": "Common", "value": 1} ]
+      selected: [],
+      datamodel: [],
+      search: '',
+      loader: false,
+      loader_dialog: false,
+      dialog: false,
+      headers: [
+                  { text: 'Id', align: 'left', value: 'id' },
+                  { text: 'Name', align: 'left', value: 'name' },
+                  { text: '', align: 'left', value: 'actions', 'sortable': false }
+              ],
+      var_content: '',
+      editedIndex: -1,
+      editedItem: {  name: '',  id: '', value: ''  },
+      project_select: 1,
+      projects_list: [ {"text": "Common", "value": 1} ]
     }),
     async created () {
       // retrieve user from local storage
@@ -164,6 +185,24 @@
       this.loader = false
     },
     methods: {
+      // duplicate variables
+      duplicateVariables(){
+        for (var i = 0; i < this.selected.length; ++i) {
+          this.duplicateVariable(this.selected[i].id)
+        }
+
+        // reset selected items
+        this.selected = []
+      },
+      // remove variables
+      deleteVariables(){
+        for (var i = 0; i < this.selected.length; ++i) {
+          this.deleteVariable(this.selected[i].id)
+        }
+
+        // reset selected items
+        this.selected = []
+      },
       // load variables from server
       loadVariables(prj_id){
         // enable the progress bar
@@ -229,26 +268,24 @@
           this.editedIndex = -1
       },
 
-      // call the server to delete a variable
-      async deleteVariable () {
-        // enable progress
-        this.loader_dialog = true
-
-        var var_id = this.editedItem.id
-        var prj_id = this.editedItem["project_id"]
-        var item_index = this.editedIndex
-
+      // call the server to duplicate a variable
+      duplicateVariable (var_id) {
         // call the backend to delete the variable
-        await BackendApi.deleteVariable(var_id, prj_id).then(resp => {
+        BackendApi.duplicateVariable(var_id, this.project_select).then(resp => {
             if ( resp != undefined) {
-              this.datamodel.splice(item_index, 1)
-            }  })
-        
-          // disable progress
-        this.loader_dialog = false
+              this.loadVariables(this.project_select)
+            }  
+        })
+      },
 
-        // reset the form
-        this.close()
+      // call the server to delete a variable
+      deleteVariable (var_id) {
+        // call the backend to delete the variable
+        BackendApi.deleteVariable(var_id, this.project_select).then(resp => {
+            if ( resp != undefined) {
+              this.loadVariables(this.project_select)
+            }  
+        })
       },
 
       // save the new variable in the server side

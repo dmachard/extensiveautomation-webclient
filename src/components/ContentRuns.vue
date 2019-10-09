@@ -240,7 +240,8 @@
                                                     action: 'TASK STARTED',
                                                     title: '',
                                                     items: [],
-                                                    active: false
+                                                    active: false,
+                                                    duration: ""
                                                 } 
                             this.logs_items.push(this.log_current)
                         }
@@ -250,7 +251,8 @@
                                                     action: 'TASK STOPPED',
                                                     title: '',
                                                     items: [],
-                                                    active: false
+                                                    active: false,
+                                                    duration: ""
                                                 } 
                             this.logs_items.push(this.log_current)
                         }
@@ -260,7 +262,8 @@
                                                     action: 'RUNNING',
                                                     title: endline,
                                                     items: [],
-                                                    active: false
+                                                    active: false,
+                                                    duration: ""
                                                 } 
                             this.logs_items.push(this.log_current)
                         }
@@ -280,8 +283,9 @@
                                                     level: "error"} )
                         }
                         if ( action == "script-stopped") {
-                            const [, , result, ] = logs[i].split(" ")
+                            const [, , result, duration ] = logs[i].split(" ")
                             this.log_current.action = result
+                            this.log_current.duration = duration
                         }
                     }
 

@@ -91,6 +91,10 @@ export const BackendApi = new Vue({
         }
         return this.execute('post', '/variables/update', body)
       },
+      duplicateVariable(id, prjid){
+        var body = {"variable-id": id, "project-id": prjid}
+        return this.execute('post', '/variables/duplicate', body)
+      },
       deleteVariable(id, prjid){
         var body = {"variable-id": id, "project-id": prjid}
         return this.execute('post', '/variables/remove', body)
