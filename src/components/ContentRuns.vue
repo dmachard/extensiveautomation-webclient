@@ -34,10 +34,14 @@
                                           >{{ item.action }}</v-chip>
                                     </v-list-item-action>
                                     <v-list-item-content>
-                                        <v-list-item-title>
+                                        <v-list-item-title v-text="item.title"></v-list-item-title>
+                                        <!--<v-list-item-title>
                                             <span class="font-weight-bold body-2">{{ item.title }}</span>
-                                        </v-list-item-title>
+                                        </v-list-item-title>-->
                                     </v-list-item-content>
+                                    <v-list-item-action>
+                                        <span v-if="item.duration != 0">{{ item.duration }}s</span>
+                                    </v-list-item-action>
                                 </v-list-item>
                             </template>
                             <v-list-item v-for="subItem in item.items"

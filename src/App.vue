@@ -21,6 +21,15 @@
         <div><strong>Extensive Automation {{app_version}}</strong> -- &copy; 2010-{{ new Date().getFullYear() }} -- Denis MACHARD</div>
       </v-footer>
       
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      top
+      :color="color_snackbar"
+    >
+      {{ text }}
+    </v-snackbar>
+
     <v-dialog v-model="dialog" persistent max-width="290">
       <v-card>
         <v-card-title>
@@ -212,30 +221,52 @@
         current_password: '',
         new_password: '',
         show_password_current: false,
-        show_password_new: false
+        show_password_new: false,
+        snackbar: false,
+        text: 'My timeout is set to 2000.',
+        timeout: 5000,
+        color_snackbar: "error"
       }
     },
     created() {
         EventBus.$on('ApiAuthenticationError', obj => {
-            this.dialog = true
+          this.snackbar = true
+          this.color_snackbar = "error"
+            //this.dialog = true
             this.error_auth = true
-            this.msg = this.sentenceCase(obj.response.data.error)            
+           // this.msg = this.sentenceCase(obj.response.data.error)   
+            this.text = this.sentenceCase(obj.response.data.error)   
+            // update the name of the current page
+            //EventBus.$emit('CurrentPageChanged', "Login")
+
+            // redirect to the login page
+            // eslint-disable-next-line
+           //this.$router.push('/login').catch(err => {})
         });
         
         EventBus.$on('ApiError', obj => {
-            this.dialog = true 
-            this.msg = this.sentenceCase(obj.response.data.error)
+           // this.dialog = true 
+            this.snackbar = true
+            this.color_snackbar = "error"
+            this.text = this.sentenceCase(obj.response.data.error) 
+           // this.msg = this.sentenceCase(obj.response.data.error)
         });
 
         EventBus.$on('ApiFatal', obj => {
-            this.dialog = true 
+          this.snackbar = true
+          this.color_snackbar = "error"
+           // this.dialog = true 
             this.error_auth = true
-            this.msg =  obj
+           // this.msg =  obj
+            this.text = obj
         });
 
         EventBus.$on('AppWarning', obj => {
-            this.dialog_warning = true
-            this.msg = obj
+          this.snackbar = true
+          this.color_snackbar = "warning"
+          this.text = obj
+            //this.dialog_warning = true
+          //  this.msg = obj
         });
     },
     methods: {

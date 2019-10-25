@@ -8,5 +8,6 @@
 		5. (minor) projects: show select in table added
 		6. (minor) variables: show select in table added
 		7. (medium) variables: new button to duplicate a variable
+		8. (medium) runs: duration added in logs
 	Issues Fixed
 		1. (minor) xxxx
