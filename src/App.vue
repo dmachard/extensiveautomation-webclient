@@ -234,30 +234,23 @@
           this.color_snackbar = "error"
             //this.dialog = true
             this.error_auth = true
-           // this.msg = this.sentenceCase(obj.response.data.error)   
             this.text = this.sentenceCase(obj.response.data.error)   
-            // update the name of the current page
-            //EventBus.$emit('CurrentPageChanged', "Login")
 
             // redirect to the login page
             // eslint-disable-next-line
-           //this.$router.push('/login').catch(err => {})
+           this.userLogout()
         });
         
         EventBus.$on('ApiError', obj => {
-           // this.dialog = true 
             this.snackbar = true
             this.color_snackbar = "error"
             this.text = this.sentenceCase(obj.response.data.error) 
-           // this.msg = this.sentenceCase(obj.response.data.error)
         });
 
         EventBus.$on('ApiFatal', obj => {
           this.snackbar = true
           this.color_snackbar = "error"
-           // this.dialog = true 
             this.error_auth = true
-           // this.msg =  obj
             this.text = obj
         });
 
@@ -265,8 +258,6 @@
           this.snackbar = true
           this.color_snackbar = "warning"
           this.text = obj
-            //this.dialog_warning = true
-          //  this.msg = obj
         });
     },
     methods: {
