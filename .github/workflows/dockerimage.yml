@@ -19,7 +19,6 @@ jobs:
         npm run build
     - name: Build the Docker image
       run: |
-        # build image
         docker build -t extensiveautomation-webclient .
     - name: Start the container
       run: |

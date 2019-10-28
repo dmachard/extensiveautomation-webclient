@@ -1,0 +1,33 @@
+name: Publish to DockerHub
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+    - name: Npm install, build
+      run: |
+        npm install
+        npm run build
+    - name: Build the Docker image
+      run: |
+        docker build -t extensiveautomation-webclient .
+    - name: Tag image
+      run: |
+        EA_VERSION=$(node -p -e "require('./package.json').version")
+        EA_NAME="extensiveautomation"
+        docker tag ${EA_NAME}-webclient ${EA_NAME}/${EA_NAME}-webclient:${EA_VERSION}
+        docker tag ${EA_NAME}-webclient ${EA_NAME}/${EA_NAME}-webclient:latest
+    - name: Upload to DockerHub
+      run: |
+        docker login -u ${{ secrets.DOCKERHUB_LOGIN }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+        EA_VERSION=$(node -p -e "require('./package.json').version")
+        EA_NAME="extensiveautomation"
+        docker push ${EA_NAME}/${EA_NAME}-webclient:latest
+        docker push ${EA_NAME}/${EA_NAME}-webclient:${EA_VERSION}
