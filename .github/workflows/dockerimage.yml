@@ -25,4 +25,4 @@ jobs:
         docker run -d -p 8080:80 --name=extensive-webclient extensiveautomation-webclient
     - name: Test the container
       run: |
-        curl http://127.0.0.1:80/
+        curl http://127.0.0.1:8080/
