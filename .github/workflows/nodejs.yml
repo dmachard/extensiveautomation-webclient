@@ -1,6 +1,10 @@
 name: Node Build
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - unstable
 
 jobs:
   test:
