@@ -1,35 +1,41 @@
 <template>
-
-  <v-toolbar dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed>
-    <v-toolbar-side-icon v-if="loggedIn"  @click.stop="hideNavigation"></v-toolbar-side-icon>
-    <v-toolbar-title>Extensive Automation</v-toolbar-title>
+ <div>
+    <v-app-bar  color="black"
+      dark
+      fixed
+      app
+      :clipped-left="$vuetify.breakpoint.mdAndUp" 
+    >
+       <v-app-bar-nav-icon v-if="loggedIn"  @click.stop="hideNavigation"></v-app-bar-nav-icon>
+    <v-toolbar-title>Extensive Automation  
+        <span class="overline"> &bull; {{ current_page }}</span></v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items >
     <v-menu v-if="loggedIn"  bottom left offset-y>
-      <v-btn flat slot="activator">
-        <v-icon>person</v-icon>
-        {{username}}
-      </v-btn>
-      
+      <template v-slot:activator="{ on }">
+        <v-btn text v-on="on">
+          <v-icon>person</v-icon>
+          {{username}}
+        </v-btn>
+      </template>
        <v-list>
-        <v-list-tile  @click="userProfile"  >
-          <v-list-tile-title>
+        <v-list-item  @click="userProfile"  >
+          <v-list-item-title>
             <v-icon>account_circle</v-icon>
             Account
-            </v-list-tile-title>
-        </v-list-tile>
+            </v-list-item-title>
+        </v-list-item>
         <v-divider></v-divider>
-        <v-list-tile  @click="userLogout" >
-          <v-list-tile-title>
+        <v-list-item  @click="userLogout" >
+          <v-list-item-title>
               <v-icon>exit_to_app</v-icon>
-              Logout</v-list-tile-title>
-        </v-list-tile>
+              Logout</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-menu>
     </v-toolbar-items>
-  </v-toolbar>
-
-  
+      </v-app-bar>
+  </div>
   
 </template>
  
@@ -40,7 +46,8 @@
     data () {
       return {
         loggedIn: false,
-        username: "undefined"
+        username: "undefined",
+        current_page: 'Login'
       }
     },
     methods: {
@@ -55,6 +62,10 @@
       }
    },
     created:function() {
+      EventBus.$on('CurrentPageChanged', obj => {
+          this.current_page = obj         
+      });
+
       EventBus.$on('ApiLogged', obj => {
         this.username = obj.api_login
         this.loggedIn = true;      

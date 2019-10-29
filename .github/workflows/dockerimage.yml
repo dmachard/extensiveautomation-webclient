@@ -1,0 +1,28 @@
+name: Docker Image
+
+on:
+  push:
+    branches:
+      - master
+      - unstable
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+    - name: Npm install, build
+      run: |
+        npm install
+        npm run build
+    - name: Build the Docker image
+      run: |
+        docker build -t extensiveautomation-webclient .
+    - name: Start the container
+      run: |
+        docker run -d -p 8080:80 --name=extensive-webclient extensiveautomation-webclient
+    - name: Test the container
+      run: |
+        curl http://127.0.0.1:8080/

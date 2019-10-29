@@ -136,8 +136,12 @@
                                 // emit signal to others components
                                 EventBus.$emit('ApiLogged', user_session)
 
+                                // update the name of the current page
+                                EventBus.$emit('CurrentPageChanged', "Dashboard")
+
                                 // redirect to the welcome page
-                                app.$router.push('/dashboard')  
+                                // eslint-disable-next-line
+                                app.$router.push('/dashboard').catch(err => {})  
                             }  
                         })
 
@@ -158,9 +162,18 @@
 
             var user = localStorage.getItem('user_session')
             if(user === null || user === undefined) {
-                app.$router.push('/login');
+
+              // update the name of the current page
+              EventBus.$emit('CurrentPageChanged', "Login")
+
+              // eslint-disable-next-line
+              app.$router.push('/login').catch(err => {})
             } else {
-                app.$router.push('/dashboard');
+              // update the name of the current page
+              EventBus.$emit('CurrentPageChanged', "Dashboard")
+
+              // eslint-disable-next-line
+              app.$router.push('/dashboard').catch(err => {})
             }
         }  
     }

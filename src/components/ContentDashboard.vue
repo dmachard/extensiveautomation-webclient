@@ -1,47 +1,44 @@
 <template>
-
-<div>
-<v-toolbar flat color="greylight">
-          <v-spacer></v-spacer>
-          <v-spacer></v-spacer>
-          <v-spacer></v-spacer>
-          <v-select
-                v-model="refresh_select"
-                :items="refresh_list"
-                prepend-icon="timer"
-                @input="onRefreshChanged"
-              ></v-select>
-      </v-toolbar>
-          
- <v-container fluid grid-list-xl>
-    <v-layout wrap>
-      <v-flex xs12 >
-          <v-label >DASHBOARD > TASKS</v-label>
-       </v-flex>
-      <v-flex xs12 sm6 md4>
-        <v-card >
-          <v-card-text class="black--text display-1">
-            <v-chip color="blue" text-color="white">{{running}} RUNNING</v-chip>
-            <v-chip color="grey" text-color="white">{{scheduled}} SCHEDULED</v-chip>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 >
-          <v-label >DASHBOARD > RUNS</v-label>
-       </v-flex>
-      <v-flex xs12 sm6 md4>
-        <v-card >
-          <v-card-text class="black--text display-1">
-            <v-chip color="green" text-color="white">{{passed}} PASSED</v-chip>
-            <v-chip color="red" text-color="white">{{failed}} FAILED</v-chip>
-            <v-chip color="orange" text-color="white">{{undef}} UNDEFINED</v-chip>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
-
-</div>
+  <div>
+    <v-toolbar flat color="greylight" dense>
+      <div class="flex-grow-1"></div>
+      <v-toolbar-items>
+        <v-select
+          v-model="refresh_select"
+          :items="refresh_list"
+          prepend-icon="timer"
+          @input="onRefreshChanged"
+        ></v-select>
+      </v-toolbar-items>
+    </v-toolbar>    
+    <v-container fluid grid-list-xl>
+      <v-layout wrap>
+        <v-flex xs12 >
+          <v-label >TASKS</v-label>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <v-card >
+            <v-card-text>
+              <v-chip class="mr-2" color="blue" text-color="white">{{running}} RUNNING</v-chip>
+              <v-chip class="mr-2" color="grey" text-color="white">{{scheduled}} SCHEDULED</v-chip>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs12 >
+          <v-label>RUNS</v-label>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <v-card >
+            <v-card-text>
+              <v-chip class="mr-2" color="green" text-color="white">{{passed}} PASSED</v-chip>
+              <v-chip class="mr-2" color="red" text-color="white">{{failed}} FAILED</v-chip>
+              <v-chip class="mr-2" color="orange" text-color="white">{{undef}} UNDEFINED</v-chip>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -64,6 +61,7 @@
           }
       },
       methods: {
+        // get tasks listing from server
         async getTasksListing(){
           var running = 0
           var scheduled = 0
@@ -78,15 +76,14 @@
               }
             }
           })
-
           this.running = running
           this.scheduled = scheduled
         },
+        // get runs listing from server
         async getRunsListing(){
           var passed = 0
           var failed = 0
           var undef = 0
-
           for (var i = 0; i < this.prjs_granted.length; i++) {
             await BackendApi.getRunsListing(this.prjs_granted[i].id).then(resp => {
                 if ( resp != undefined) {
@@ -102,12 +99,12 @@
                 }
               })
           }
-
           this.passed = passed
           this.failed = failed
           this.undef = undef
         },
         pollData () {
+          // activate automatic refresh every xx second
           this.polling = setInterval(() => {
             this.getTasksListing()
             this.getRunsListing()
@@ -124,9 +121,9 @@
         }
       },
       beforeDestroy () {
+        // disable the automatic refresh when the page is not more displayed
         clearInterval(this.polling)
       },
-
       async created () {
         // retrieve user from local storage
         const user =  localStorage.getItem('user_session');
@@ -135,13 +132,14 @@
         // get projects according to the user
         this.prjs_granted = await BackendApi.getProjectsGranted(user_json)
 
+        // get from server tasks and runs
         this.getTasksListing()
         this.getRunsListing()
 
+        // if refresh is not disabled then activate the automatic refresh
         if (this.refresh_select > 0 ){
           this.pollData()
         }
      }
-
   }
 </script>

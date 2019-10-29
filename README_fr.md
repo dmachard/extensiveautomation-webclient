@@ -1,6 +1,9 @@
 Interface web pour le serveur ExtensiveAutomation
 =====================================
 
+![](https://github.com/ExtensiveAutomation/extensiveautomation-webclient/workflows/Node%20Build/badge.svg)
+![](https://github.com/ExtensiveAutomation/extensiveautomation-webclient/workflows/Docker%20Image/badge.svg)
+
 Introduction
 ------------
 

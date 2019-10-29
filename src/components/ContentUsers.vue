@@ -1,163 +1,143 @@
 <template>
-<v-container >
-        <v-dialog 
-          v-model="dialog" 
-          max-width="600px"
-          persistent 
-          no-click-animation
-          transition=""
-        >
-        <v-card>
-          <v-card-title>
-            <span class="headline">User Account</span>
-            <v-spacer></v-spacer>
-            <v-menu bottom left>
-              <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on"  >
-                  <v-icon>more_vert</v-icon>
-                </v-btn>
-              </template>
-              <v-list   v-if="this.editedIndex > -1" >
-                <v-list-tile @click="resetPassword">
-                  <v-list-tile-title>Reset password</v-list-tile-title>
-                </v-list-tile>
-                <v-list-tile color="red" @click="deleteUser">
-                  <v-list-tile-title>Delete</v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-            </v-menu>
-
-          </v-card-title>
-
-          <v-divider></v-divider>
-          <v-card-text>
-
-            <v-container grid-list-md>
-            <v-layout wrap>
+  <v-container >
+    <v-dialog v-model="dialog" 
+              max-width="600px"
+              persistent 
+              no-click-animation
+              transition=""
+      >
+      <v-card>
+        <v-card-title>
+          <span class="headline">User Account</span>
+          <v-spacer></v-spacer>
+          <v-menu bottom left offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on"  >
+              <v-icon>more_vert</v-icon>
+            </v-btn>
+          </template>
+          <v-list   v-if="this.editedIndex > -1" >
+            <v-list-item @click="resetPassword">
+              <v-list-item-title>
+                <v-icon>clear</v-icon>Reset password
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item color="red" @click="deleteUser">
+              <v-list-item-title>
+                <v-icon>delete</v-icon>Delete
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+          </v-menu>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-container grid-list-md>
+          <v-layout wrap>
             <v-flex  xs12>
-              <v-text-field 
-                              v-model="editedItem.login" 
-                              label="Login"
-                              required
-                              :rules="[() => !!editedItem.login || 'This field is required']"
-                        ></v-text-field>
-              </v-flex>
-
+              <v-text-field v-model="editedItem.login" 
+                            label="Login"
+                            required
+                            :rules="[() => !!editedItem.login || 'This field is required']"
+              ></v-text-field>
+            </v-flex>
             <v-flex xs12 >
-            <v-text-field 
-                            :disabled=" this.editedIndex > -1" 
+              <v-text-field :disabled=" this.editedIndex > -1" 
                             v-model="editedItem.password" 
                             label="Password"
                             :type="show1 ? 'text' : 'password'"
                             @click:append="show1 = !show1"
                             :append-icon="show1 ? 'visibility_off' : 'visibility'"
                             :rules="[() => !!editedItem.password || 'This field is required']"
-                      ></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-             <v-text-field
-                      v-model="editedItem.email"
-                      label="E-mail"                      
-                    ></v-text-field>
-              </v-flex>
-              
-              <v-flex xs12 sm6 md4>
-               <v-select
-                    v-model="editedItem.level"
-                    :items="level_items"
-                    chips
-                    label="Level"
-                    required
-                    dense
-                  ></v-select>
-               </v-flex>
-
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12>
+              <v-text-field v-model="editedItem.email"
+                            label="E-mail"                      
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12 sm6 md4>
+              <v-select v-model="editedItem.level"
+                        :items="level_items"
+                        chips
+                        label="Level"
+                        required
+                        dense
+              ></v-select>
+            </v-flex>
             <v-flex xs12 sm8>
-              <v-select
-                  v-model="editedItem.projects"
-                  :items="projects_items"
-                  label="Projects granted"
-                  multiple
-                  chips
-                  required
-                  dense
-                  deletable-chips
-                ></v-select>
-               </v-flex>
-
-                <v-flex xs12>
-
-             <v-text-field
-                      v-model="editedItem.apikey_secret"
-                      :readonly=true
-                      label="API Key"                      
-                    ></v-text-field>
-              </v-flex>
-                </v-layout>
-              </v-container>
-          </v-card-text>
-
-          
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Close</v-btn>
-            <v-btn color="blue darken-1" flat 
-                  @click="validate"
-                  :loading="loader_dialog">Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-   <v-layout >
-       <v-flex>
-
+              <v-select v-model="editedItem.projects"
+                        :items="projects_items"
+                        label="Projects granted"
+                        multiple
+                        chips
+                        required
+                        dense
+                        deletable-chips
+              ></v-select>
+            </v-flex>
+            <v-flex xs12>
+              <v-text-field v-model="editedItem.apikey_secret"
+                            :readonly=true
+                            label="API Key"                      
+              ></v-text-field>
+            </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+            <v-btn color="blue darken-1"
+                   text
+                   @click="close">Close</v-btn>
+            <v-btn color="blue darken-1"
+                   text 
+                   @click="validate"
+                   :loading="loader_dialog">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-layout >
+      <v-flex>
         <v-card>
           <v-card-title>
-            <v-btn @click="addItem"  color="green" dark class="mb-2">ADD USER</v-btn>
+            <v-btn @click="addItem"
+                   color="green"
+                   dark
+                   class="mb-2">ADD USER</v-btn>
             <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="search"
-              label="Search"
+            <v-text-field v-model="search"
+                          append-icon="search"
+                          label="Search"
             ></v-text-field>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <v-container >
-            <v-layout wrap>
-             
-             <v-flex>
-
-    <v-data-table
-      :headers="headers"
-      :items="datamodel"
-      :rows-per-page-items="rowsPerPageItems"
-      :pagination.sync="pagination"
-      :search="search"
-      :loading="loader"
-    >
-      <template slot="items" slot-scope="props">
-        <td class="text-xs-left">{{props.item.id}}</td>
-        <td class="text-xs-left">
-           {{ props.item.login }}
-        </td>
-        <td class="text-xs-left">
-          <v-btn icon class="mx-0" @click="editItem(props.item)" >
-            <v-icon >edit</v-icon>
-          </v-btn>
-        </td>
-      </template>
-    </v-data-table>
-   </v-flex>
-            </v-layout>
-              </v-container>
+              <v-layout wrap>
+                <v-flex>
+                  <v-data-table :headers="headers"
+                                :items="datamodel"
+                                :items-per-page="10"
+                                :search="search"
+                                :loading="loader"
+                  >
+                    <template v-slot:item.actions="{ item }">
+                      <v-btn icon
+                            class="mx-0"
+                            @click="editItem(item)" >
+                        <v-icon >edit</v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+                </v-flex>
+              </v-layout>
+            </v-container>
           </v-card-text>
-
         </v-card> 
-
-     </v-flex>
-   </v-layout>
-</v-container>
-
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -166,7 +146,6 @@
 
   export default {
     data: () => ({
-      title: 'Administration :: Users',
       dialog: false,
       loader: false,
       loader_dialog: false,
@@ -177,7 +156,6 @@
         { text: '', align: 'left', value: 'actions', 'sortable': false }
       ],
       datamodel: [],
-     // dataprojects: [],
       editedIndex: -1,
       editedItem: { login: '',  
                     id: '', 
@@ -186,10 +164,6 @@
                     level: 'tester', 
                     projects: [1], 
                     apikey_secret: ''},
-      rowsPerPageItems: [10, 20, 50],
-      pagination: {
-          rowsPerPage: 10
-      },
       level_items: [
           { "text": 'Administrator', "value": "administrator" },
           { "text": 'Monitor', "value": "monitor" },
@@ -223,10 +197,13 @@
       })
     },
     methods: {
+      // open the dialog to create a new user
       addItem() {
         // show the form
         this.dialog = true
       },
+
+      // open the dialog to edit the user
       editItem (item) {
         this.editedIndex = this.datamodel.indexOf(item)
         this.editedItem = Object.assign({}, item)
@@ -234,6 +211,8 @@
         // show the dialog to edit the item
         this.dialog = true
       },
+
+      // close the dialog (cancel)
       close () {
         // hide the dialog
         this.dialog = false
@@ -241,6 +220,8 @@
         this.editedItem = {  login: '',  id: '', password: '', email: '', level: 'tester', projects: [1]}
         this.editedIndex = -1
       },
+
+      // delete user in server side
       async deleteUser () {
         // enable progress
         this.loader_dialog = true
@@ -261,6 +242,8 @@
         // close and reset the form
         this.close()
       },
+
+      // reset the password of a user in server side
       async resetPassword(){
         // enable progress
         this.loader_dialog = true
@@ -277,6 +260,8 @@
         // disable progress
         this.loader_dialog = false
       },
+
+      // save/edit the user in server side
       async validate () {
         // enable progress
         this.loader_dialog = true

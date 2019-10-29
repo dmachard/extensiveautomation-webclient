@@ -16,11 +16,20 @@
       <router-view></router-view>
     </v-content>
 
-    <v-footer class="pa-3">
-        <v-spacer></v-spacer>
-        <div>Extensive Automation &copy; - 2010-2019 - Denis MACHARD</div>
+    <v-footer app padless class="caption" >
+        <div class="flex-grow-1"></div>
+        <div><strong>Extensive Automation {{app_version}}</strong> -- &copy; 2010-{{ new Date().getFullYear() }} -- Denis MACHARD</div>
       </v-footer>
       
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      top
+      :color="color_snackbar"
+    >
+      {{ text }}
+    </v-snackbar>
+
     <v-dialog v-model="dialog" persistent max-width="290">
       <v-card>
         <v-card-title>
@@ -30,7 +39,7 @@
         <v-card-text>{{ msg }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" flat @click="closeError">OK</v-btn>
+          <v-btn color="red darken-1" text @click="closeError">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -44,7 +53,7 @@
         <v-card-text>{{ msg }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" flat @click="closeWarning">OK</v-btn>
+          <v-btn color="red darken-1" text @click="closeWarning">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -66,9 +75,9 @@
                 </v-btn>
               </template>
               <v-list>
-                <v-list-tile @click="updatePassword">
-                  <v-list-tile-title>Update password</v-list-tile-title>
-                </v-list-tile>
+                <v-list-item @click="updatePassword">
+                  <v-list-item-title>Update password</v-list-item-title>
+                </v-list-item>
               </v-list>
             </v-menu>
 
@@ -118,7 +127,7 @@
           
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat 
+            <v-btn color="blue darken-1" text 
                   @click="closeProfile"
                   :loading="loader">Close</v-btn>
           </v-card-actions>
@@ -168,10 +177,10 @@
           
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat 
+            <v-btn color="blue darken-1" text 
                   @click="closePassword"
                   :loading="loader">Close</v-btn>
-            <v-btn color="blue darken-1" flat 
+            <v-btn color="blue darken-1" text 
                   @click="validatePassword"
                   :loading="loader_password">Update</v-btn>
           </v-card-actions>
@@ -186,8 +195,10 @@
   import Navigation from './components/Navigation.vue'
   
   import { BackendApi } from '@/backend.js'
-  import { EventBus } from './main';
-  
+  import { EventBus } from './main'
+
+  var pkg_json = require('./../package.json')
+
   export default {
     components: {
       Toolbar,
@@ -195,6 +206,7 @@
     },
     data () {
       return {
+        app_version: pkg_json.version,
         dialog: false,
         error_auth: false,
         msg: '',
@@ -209,30 +221,43 @@
         current_password: '',
         new_password: '',
         show_password_current: false,
-        show_password_new: false
+        show_password_new: false,
+        snackbar: false,
+        text: 'My timeout is set to 2000.',
+        timeout: 5000,
+        color_snackbar: "error"
       }
     },
     created() {
         EventBus.$on('ApiAuthenticationError', obj => {
-            this.dialog = true
+          this.snackbar = true
+          this.color_snackbar = "error"
+            //this.dialog = true
             this.error_auth = true
-            this.msg = this.sentenceCase(obj.response.data.error)            
+            this.text = this.sentenceCase(obj.response.data.error)   
+
+            // redirect to the login page
+            // eslint-disable-next-line
+           this.userLogout()
         });
         
         EventBus.$on('ApiError', obj => {
-            this.dialog = true 
-            this.msg = this.sentenceCase(obj.response.data.error)
+            this.snackbar = true
+            this.color_snackbar = "error"
+            this.text = this.sentenceCase(obj.response.data.error) 
         });
 
         EventBus.$on('ApiFatal', obj => {
-            this.dialog = true 
+          this.snackbar = true
+          this.color_snackbar = "error"
             this.error_auth = true
-            this.msg =  obj
+            this.text = obj
         });
 
         EventBus.$on('AppWarning', obj => {
-            this.dialog_warning = true
-            this.msg = obj
+          this.snackbar = true
+          this.color_snackbar = "warning"
+          this.text = obj
         });
     },
     methods: {
@@ -258,8 +283,12 @@
         // emit signal to others components
         EventBus.$emit('ApiLogout', 'success')
 
+        // update the name of the current page
+        EventBus.$emit('CurrentPageChanged', "Login")
+
         // redirect to the login page
-        this.$router.push('/login');
+        // eslint-disable-next-line
+        this.$router.push('/login').catch(err => {})
       },
       hideNavigation() {
          this.nav = !this.nav
