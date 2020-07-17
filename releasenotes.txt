@@ -1,5 +1,5 @@
 5.0.0
-	Date: xx/07/2020
+	Date: 17/07/2020
 	What's new
 		1. (major) support server version 22
 		2. (major) new storage part to open and edit yaml files
