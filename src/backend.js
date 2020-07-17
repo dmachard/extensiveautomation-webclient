@@ -203,6 +203,22 @@ export const BackendApi = new Vue({
                      "schedule-at": [y, m, d, h, mn, s] }
         return this.execute('post', '/tasks/schedule', body)
       },
+      scheduleJob(testprjid, testname, testext, testpath, schedid, repeat, y, m, d, h, mn, s){
+        var body = { "yaml-file": "/" + testpath + "/" + testname + "." + testext,
+                     "schedule-id": schedid, "schedule-repeat": repeat, 
+                     "schedule-at": [y, m, d, h, mn, s] }
+        return this.execute('post', '/v1/jobs?workspace=' + testprjid, body)
+      },
+      downloadFile(workspace, filepath){
+        return this.execute('get', '/v1/files/' + encodeURIComponent(filepath) + '?workspace=' + workspace)
+      },
+      uploadFile(workspace, filepath, filecontent){
+        var body = { "file-content": filecontent }
+        return this.execute('post', '/v1/files/' + encodeURIComponent(filepath) + '?workspace=' + workspace, body)
+      },
+      deleteFile(workspace, filepath){
+        return this.execute('delete', '/v1/files/' + encodeURIComponent(filepath) + '?workspace=' + workspace)
+      },
       getScriptsListing(id){
         var body = { "project-id": id }
         return this.execute('post', '/tests/listing/dict', body)

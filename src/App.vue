@@ -12,9 +12,9 @@
     </toolbar>
 
     
-    <v-content>
+    <v-main>
       <router-view></router-view>
-    </v-content>
+    </v-main>
 
     <v-footer app padless class="caption" >
         <div class="flex-grow-1"></div>

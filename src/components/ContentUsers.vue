@@ -68,7 +68,7 @@
             <v-flex xs12 sm8>
               <v-select v-model="editedItem.projects"
                         :items="projects_items"
-                        label="Projects granted"
+                        label="Workspace(s)"
                         multiple
                         chips
                         required

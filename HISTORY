@@ -1,3 +1,18 @@
+4.0.0
+	Date: 30/10/2019
+	What's new
+		1. (major) major update to vuetify 2
+		2. (minor) application version added in footer
+		3. (medium) runs: task event added in logs
+		4. (minor) current page name added in main toolbar
+		5. (minor) projects: show select in table added
+		6. (minor) variables: show select in table added
+		7. (medium) variables: new button to duplicate a variable
+		8. (medium) runs: duration added in logs
+		9. (major) continuous integration: new worflow added for github
+	Issues Fixed
+		1. (minor) fix invalid credentials message when user no more exists
+        
 3.0.0
 	Date: 02/10/2019
 	What's new

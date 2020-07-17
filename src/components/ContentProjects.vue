@@ -8,22 +8,7 @@
       >
       <v-card>
         <v-card-title>
-          <span class="headline">Project</span>
-          <!--<v-spacer></v-spacer>
-          <v-menu bottom left offset-y>
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on"  >
-                <v-icon>more_vert</v-icon>
-              </v-btn>
-            </template>
-            <v-list  v-if="this.editedIndex > -1" >
-              <v-list-item color="red" 
-                           @click="deleteProject">
-                <v-list-item-title>
-                <v-icon>delete</v-icon>Delete</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>-->
+          <span class="headline">Workspace</span>
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
@@ -56,7 +41,7 @@
         <v-card-title>
           <v-btn dark
                  color="green"
-                 @click="addItem" >ADD PROJECT</v-btn>
+                 @click="addItem" >ADD WORKSPACE</v-btn>
           <v-spacer></v-spacer>
           <v-text-field v-model="search"
                         append-icon="search"

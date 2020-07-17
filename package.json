@@ -1,6 +1,6 @@
 {
-  "name": "extensiveautomation-webclient-unstable",
-  "version": "4.0.0",
+  "name": "extensiveautomation-webclient",
+  "version": "5.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

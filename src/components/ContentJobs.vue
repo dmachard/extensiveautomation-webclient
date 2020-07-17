@@ -10,21 +10,21 @@
         >
             <v-card >
                 <v-card-title>
-                    <span class="headline">Task</span>
+                    <span class="headline">Job</span>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-stepper v-model="e1" style="height: 500px;" >
                     <v-stepper-header>
-                        <v-stepper-step step="1"  editable >Select your script</v-stepper-step>
+                        <v-stepper-step step="1"  editable >Select your file</v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step step="2" editable>Schedule your task</v-stepper-step>    
+                        <v-stepper-step step="2" editable>Schedule your job</v-stepper-step>    
                     </v-stepper-header>
                     <v-stepper-items>
                         <v-stepper-content step="1"  >
                             <v-select
                                 v-model="project_select"
                                 :items="projects_list"
-                                label="Project"
+                                label="Workspace"
                                 prepend-icon="dashboard"
                                 @input="onProjectChanged"
                             ></v-select>
@@ -199,7 +199,7 @@
               <v-flex  >
         <v-card>
           <v-card-title>
-            <v-btn color="green" dark class="mb-2" @click="addTask">ADD TASK</v-btn>           
+            <v-btn color="green" dark class="mb-2" @click="addTask">SCHEDULE JOB</v-btn>           
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -424,9 +424,15 @@
             }
 
             // schedule the task on server side
-            await BackendApi.scheduleTask(testprjid, testname, testext, testpath, 
-                                          schedid, repeat,
-                                          y, m, d, h, mn, s)
+            if (testext == "yml"){
+                await BackendApi.scheduleJob(testprjid, testname, testext, testpath, 
+                                             schedid, repeat,
+                                            y, m, d, h, mn, s)
+            } else {
+                await BackendApi.scheduleTask(testprjid, testname, testext, testpath, 
+                                            schedid, repeat,
+                                            y, m, d, h, mn, s)
+            }
 
             // refresh tasks listing
             this.getTasksListing()

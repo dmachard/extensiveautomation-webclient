@@ -19,7 +19,30 @@
       </v-list>
 
       <v-divider></v-divider>
+      <v-list dense>
+            
+        <v-subheader> Storage  </v-subheader>
 
+        <v-list-item @click="load_files_p">
+          <v-list-item-action>
+            <v-icon>code</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Editor</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
+        <v-list-item @click="load_variables_p">
+          <v-list-item-action>
+            <v-icon>settings_applications</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Globals</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+  </v-list>
+  <v-divider></v-divider>
       <v-list dense>
             
         <v-subheader> Automation  </v-subheader>
@@ -29,7 +52,7 @@
             <v-icon>view_headline</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Tasks</v-list-item-title>
+            <v-list-item-title>Jobs</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -38,18 +61,10 @@
             <v-icon>history</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Runs</v-list-item-title>
+            <v-list-item-title>Executions</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item @click="load_variables_p">
-          <v-list-item-action>
-            <v-icon>settings_applications</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Variables</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
   </v-list>
   <v-divider></v-divider>
     
@@ -69,7 +84,7 @@
         <v-icon>dashboard</v-icon>
       </v-list-item-action>
       <v-list-item-content>
-        <v-list-item-title>Projects</v-list-item-title>
+        <v-list-item-title>Workspaces</v-list-item-title>
       </v-list-item-content>
     </v-list-item> 
   </v-list>
@@ -109,19 +124,28 @@
         var app = this
 
         // update the name of the current page
-        EventBus.$emit('CurrentPageChanged', "Runs")
+        EventBus.$emit('CurrentPageChanged', "Executions")
 
         // eslint-disable-next-line
-        app.$router.push('/runs').catch(err => {})
+        app.$router.push('/executions').catch(err => {})
+      },
+      load_files_p() {
+        var app = this
+
+        // update the name of the current page
+        EventBus.$emit('CurrentPageChanged', "Editor")
+
+        // eslint-disable-next-line
+        app.$router.push('/editor').catch(err => {})
       },
       load_tasks_p() {
         var app = this
 
         // update the name of the current page
-        EventBus.$emit('CurrentPageChanged', "Tasks")
+        EventBus.$emit('CurrentPageChanged', "Jobs")
 
         // eslint-disable-next-line
-        app.$router.push('/tasks').catch(err => {})
+        app.$router.push('/jobs').catch(err => {})
       },
       load_variables_p() {
         var app = this
@@ -130,7 +154,7 @@
         EventBus.$emit('CurrentPageChanged', "Variables")
 
         // eslint-disable-next-line
-        app.$router.push('/variables').catch(err => {})
+        app.$router.push('/globals').catch(err => {})
       },
       load_users_p() {
         var app = this

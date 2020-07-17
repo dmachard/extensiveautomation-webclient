@@ -1,14 +1,9 @@
-4.0.0
-	Date: 30/10/2019
+5.0.0
+	Date: xx/07/2020
 	What's new
-		1. (major) major update to vuetify 2
-		2. (minor) application version added in footer
-		3. (medium) runs: task event added in logs
-		4. (minor) current page name added in main toolbar
-		5. (minor) projects: show select in table added
-		6. (minor) variables: show select in table added
-		7. (medium) variables: new button to duplicate a variable
-		8. (medium) runs: duration added in logs
-		9. (major) continuous integration: new worflow added for github
-	Issues Fixed
-		1. (minor) fix invalid credentials message when user no more exists
+		1. (major) support server version 22
+		2. (major) new storage part to open and edit yaml files
+		3. (minor) project menu renamed to workspace
+		4. (major) tasks menu renamed to Jobs
+		5. (major) results menu renamed to Executions
+	Issues Fixed: none

@@ -9,7 +9,7 @@
          >
             <v-card>
                 <v-card-title>
-                    <span class="headline">Run Logs</span>
+                    <span class="headline">Executions Logs</span>
                     <v-spacer></v-spacer>
                     <span>
                         <v-progress-circular v-if="loader_logs==true"
@@ -35,9 +35,6 @@
                                     </v-list-item-action>
                                     <v-list-item-content>
                                         <v-list-item-title v-text="item.title"></v-list-item-title>
-                                        <!--<v-list-item-title>
-                                            <span class="font-weight-bold body-2">{{ item.title }}</span>
-                                        </v-list-item-title>-->
                                     </v-list-item-content>
                                     <v-list-item-action>
                                         <span v-if="item.duration != 0">{{ item.duration }}s</span>
@@ -76,7 +73,7 @@
                 <v-select
                     v-model="project_select"
                     :items="projects_list"
-                    label="Project"
+                    label="Workspace"
                     prepend-icon="dashboard"
                     @input="onProjectChanged"
                 ></v-select>
@@ -149,6 +146,7 @@
             polling: null,
             refresh_select: 5000,
             refresh_list: [ {"text": "Refresh disabled", "value": 0 },
+                            {"text": "Refresh every 1s", "value": 1000 },
                               {"text": "Refresh every 5s", "value": 5000 }, 
                               {"text": "Refresh every 10s", "value": 10000 },
                               {"text": "Refresh every 1min", "value": 60000 }  ],

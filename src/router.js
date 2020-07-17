@@ -6,8 +6,9 @@ import ContentProjects from './components/ContentProjects.vue'
 import ContentVariables from './components/ContentVariables.vue'
 import ContentLogin from './components/ContentLogin.vue'
 import ContentDashboard from './components/ContentDashboard.vue'
-import ContentTasks from './components/ContentTasks.vue'
+import ContentJobs from './components/ContentJobs.vue'
 import ContentRuns from './components/ContentRuns.vue'
+import ContentEditor from './components/ContentEditor.vue'
 
 Vue.use(Router)
 
@@ -17,10 +18,11 @@ const router = new Router({
         { path:'/login', component: ContentLogin },
         { path: '/users', component: ContentUsers },
         { path: '/projects', component: ContentProjects },
-        { path: '/variables', component: ContentVariables },
+        { path: '/globals', component: ContentVariables },
         { path: '/dashboard', component: ContentDashboard },
-        { path: '/tasks', component: ContentTasks },
-        { path: '/runs', component: ContentRuns },
+        { path: '/jobs', component: ContentJobs },
+        { path: '/executions', component: ContentRuns },
+        { path: '/editor', component: ContentEditor },
         { path: '/*', redirect: '/login' } // otherwise redirect to home
       ]
 });

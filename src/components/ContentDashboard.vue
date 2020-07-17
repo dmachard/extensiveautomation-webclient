@@ -1,5 +1,57 @@
 <template>
-  <div>
+    <v-container fluid>
+      <v-row dense>
+        <v-col cols=6>
+          <v-card > 
+            <v-card-title>RUNNING</v-card-title>
+            <v-card-text>
+              <p class="display-1 text--primary">{{running}}</p>
+            </v-card-text>
+          </v-card>
+         </v-col>
+         <v-col cols=6>
+           <v-card > 
+            <v-card-title>SCHEDULED</v-card-title>
+            <v-card-text>
+              <p class="display-1 text--primary">{{scheduled}}</p>
+            </v-card-text>
+          </v-card>
+       </v-col>
+      </v-row>
+
+      <v-row dense>
+        <v-col cols=6>
+          <v-card > 
+            <v-card-title>SUCCESS</v-card-title>
+            <v-card-text>
+              <p class="display-1 text--primary">{{passed}}</p>
+            </v-card-text>
+          </v-card>
+         </v-col>
+         <v-col cols=6>
+           <v-card > 
+            <v-card-title>FAILURE</v-card-title>
+            <v-card-text>
+              <p class="display-1 text--primary">{{failed}}</p>
+            </v-card-text>
+          </v-card>
+       </v-col>
+      </v-row>
+
+      <v-row dense>
+        <v-col cols=6>
+          <v-card > 
+            <v-card-title>UNDEFINED</v-card-title>
+            <v-card-text>
+              <p class="display-1 text--primary">{{undef}}</p>
+            </v-card-text>
+          </v-card>
+         </v-col>
+      </v-row>
+
+    </v-container>
+
+ <!-- <div>
     <v-toolbar flat color="greylight" dense>
       <div class="flex-grow-1"></div>
       <v-toolbar-items>
@@ -38,7 +90,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </div>
+  </div>-->
 </template>
 
 <script>

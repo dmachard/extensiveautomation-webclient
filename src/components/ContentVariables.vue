@@ -9,21 +9,6 @@
       <v-card>
         <v-card-title>
         <span class="headline">Variable</span>
-        <!--<v-spacer></v-spacer>
-        <v-menu bottom left offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on"  >
-            <v-icon>more_vert</v-icon>
-            </v-btn>
-          </template>
-          <v-list v-if="this.editedIndex > -1" >
-          <v-list-item color="red" @click="deleteVariable">
-            <v-list-item-title>
-            <v-icon>delete</v-icon>Delete
-            </v-list-item-title>
-          </v-list-item>
-          </v-list>
-        </v-menu>-->
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
@@ -72,7 +57,7 @@
             <v-spacer></v-spacer>
             <v-select v-model="project_select"
                       :items="projects_list"
-                      label="Project"
+                      label="Workspace"
                       prepend-icon="dashboard"
                       @input="onProjectChanged"
             ></v-select>
@@ -84,9 +69,6 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <!--<v-container fluid>
-              <v-layout row>
-                <v-flex>-->
                   <v-data-table :headers="headers"
                                 :items="datamodel"
                                 :items-per-page="10"
@@ -121,9 +103,6 @@
                       Duplicate
                     </v-btn>
                 </div>
-              <!--  </v-flex>
-              </v-layout>
-            </v-container>-->
           </v-card-text>
         </v-card> 
       </v-flex>
