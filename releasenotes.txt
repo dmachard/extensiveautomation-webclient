@@ -1,9 +1,7 @@
-5.0.0
-	Date: 17/07/2020
+5.1.0
+	Date: 11/05/2021
 	What's new
-		1. (major) support server version 22
-		2. (major) new storage part to open and edit yaml files
-		3. (minor) project menu renamed to workspace
-		4. (major) tasks menu renamed to Jobs
-		5. (major) results menu renamed to Executions
-	Issues Fixed: none
+		1. (minor) update to MIT license
+        2. (minor) update of some libraries of vuejs
+	Issues Fixed:
+        1. (major) axios library updated to fix vulnerability

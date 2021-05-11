@@ -1,3 +1,12 @@
+5.0.0
+	Date: 17/07/2020
+	What's new
+		1. (major) support server version 22
+		2. (major) new storage part to open and edit yaml files
+		3. (minor) project menu renamed to workspace
+		4. (major) tasks menu renamed to Jobs
+		5. (major) results menu renamed to Executions
+
 4.0.0
 	Date: 30/10/2019
 	What's new
